@@ -4,6 +4,7 @@
 #include "complex.h"
 #include "time.h"
 #include "mkl.h"
+#include "omp.h"
 
 #define RAND_MAX_F 2147483647.0f
 
@@ -25,8 +26,6 @@ int main(int argc, char const *argv[]) {
     DFTI_DESCRIPTOR_HANDLE desc_handle_dim1 = NULL;
     DFTI_DESCRIPTOR_HANDLE desc_handle_dim2 = NULL;
     MKL_LONG status;
-    clock_t start, end;
-    double cpu_time_used;
 
     //srand(time(NULL));
 
@@ -74,20 +73,19 @@ int main(int argc, char const *argv[]) {
     status = DftiSetValue(desc_handle_dim2, DFTI_OUTPUT_STRIDES, stride);
     status = DftiCommitDescriptor(desc_handle_dim2);
 
-    start = clock();
+    double start = omp_get_wtime();
 
     // Realizar as transformações FFT
     status = DftiComputeForward(desc_handle_dim1, data);
     status = DftiComputeForward(desc_handle_dim2, data);
 
-    end = clock();
+    double end = omp_get_wtime();
+    double time_spent = (end - start);
+    printf("%f s\n", time_spent);
 
-    cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
 
     status = DftiFreeDescriptor(&desc_handle_dim1);
     status = DftiFreeDescriptor(&desc_handle_dim2);
-
-    printf("Tempo de execução da FFT: %f segundos\n", cpu_time_used);
 
     printf("\nValores de data após a FFT:\n");
     for(int i = 0; i < M; i++){

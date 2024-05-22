@@ -42,58 +42,57 @@ int main(int argc, char const *argv[]) {
     printf("\n");
 
 
+    //Fazendo o Vetor B
+
     MKL_Complex8 *VectorB = (MKL_Complex8 *)malloc(M * N * sizeof(MKL_Complex8));
-    MKL_Complex8 *aux = (MKL_Complex8 *)malloc(M * N * sizeof(MKL_Complex8));
 
     double start = omp_get_wtime();
 
-    for(int i = 0; i < M; i++){
-        for(int j = 0; j < N; j++){
-            if(i == 0 || i == M-1){
-                VectorB[i + j*M].real = data[M-1-i + j*M].real - data[i + j*M].real;
-                VectorB[i + j*M].imag = data[M-1-i + j*M].imag - data[i + j*M].imag;
-            } else{
-                VectorB[i + j*M].real = 0.0f;
-                VectorB[i + j*M].imag = 0.0f;
-            }
-            if(j == 0 || j == N-1){
-                aux[i + j*M].real = data[i + (N-1-j)*M].real - data[i + j*M].real;
-                aux[i + j*M].imag = data[i + (N-1-j)*M].imag - data[i + j*M].imag;
-            } else{
-                aux[i + j*M].real = 0.0f;
-                aux[i + j*M].imag = 0.0f;
-            }
-        }
+    int i = 0;
+
+    //Computando as quinas
+    VectorB[0].real = data[M-1].real - 2*data[0].real + data[(N-1)*M].real;
+    VectorB[0].imag = data[M-1].imag - 2*data[0].imag + data[(N-1)*M].imag;
+
+    VectorB[M-1].real = data[0].real - 2*data[M-1].real + data[M-1 + (N-1)*M].real;
+    VectorB[M-1].imag = data[0].imag - 2*data[M-1].imag + data[M-1 + (N-1)*M].imag;
+
+    VectorB[(N-1)*M].real = data[0].real - 2*data[(N-1)*M].real + data[M-1 + (N-1)*M].real;
+    VectorB[(N-1)*M].imag = data[0].imag - 2*data[(N-1)*M].imag + data[M-1 + (N-1)*M].imag;
+
+    VectorB[M-1 + (N-1)*M].real = data[M-1].real - 2*data[M-1 + (N-1)*M].real + data[(N-1)*M].real;
+    VectorB[M-1 + (N-1)*M].imag = data[M-1].imag - 2*data[M-1 + (N-1)*M].imag + data[(N-1)*M].imag;
+
+
+    //linha 0 e M-1
+    for(int j = 1; j < N-1; j++){
+        VectorB[j*M].real = data[j*M + M-1].real - data[j*M].real;
+        VectorB[j*M].imag = data[j*M + M-1].imag - data[j*M].imag;
+
+        VectorB[j*M + M-1].real = VectorB[j*M].real*(-1);
+        VectorB[j*M + M-1].imag = VectorB[j*M].imag*(-1);
     }
 
-    /*
-    printf("\nValores de R:\n");
-    for(int i = 0; i < M; i++){
-        for(int j = 0; j < N; j++){
-            printf("(%.2f, %.2f) ", VectorB[i + j*M].real, VectorB[i + j*M].imag);
-        }
-        printf("\n");
+    //coluna 0 e N-1
+    for(int i = 1; i < M-1; i++){
+        VectorB[i].real = data[i + M*(N-1)].real - data[i].real;
+        VectorB[i].imag = data[i + M*(N-1)].imag - data[i].imag;
+
+        VectorB[i + M*(N-1)].real = VectorB[i].real*(-1);
+        VectorB[i + M*(N-1)].imag = VectorB[i].imag*(-1);
     }
-    printf("\n");
 
-    printf("\nValores de C:\n");
-    for(int i = 0; i < M; i++){
-        for(int j = 0; j < N; j++){
-            printf("(%.2f, %.2f) ", aux[i + j*M].real, aux[i + j*M].imag);
+    for(int i = 1; i < M-1; i++){
+        for(int j = 1; j < N-1; j++){
+            VectorB[i + j*M].real = 0.0f;
+            VectorB[i + j*M].imag = 0.0f;
         }
-        printf("\n");
     }
-    printf("\n");
-
-    */
-
-    vcAdd(N*M, (MKL_Complex8 *)aux, (MKL_Complex8 *)VectorB, (MKL_Complex8 *)VectorB);
 
     double end = omp_get_wtime();
     double time_spent = (end - start);
     printf("%f s\n", time_spent);
-
-
+    
     /*
     printf("\nValores de B:\n");
     for(int i = 0; i < M; i++){
@@ -106,7 +105,6 @@ int main(int argc, char const *argv[]) {
     */
 
     free(data);
-    free(aux);
     free(VectorB);
 
     return 0;
