@@ -16,8 +16,7 @@ int main(int argc, char const *argv[]) {
     int M = atoi(argv[1]);
     int N = atoi(argv[2]);
 
-    // Alocar memória dinamicamente para o array data
-    _Complex float *data = (_Complex float *)malloc(M * N * sizeof(_Complex float));
+    MKL_Complex8 *data = (MKL_Complex8 *)malloc(M * N * sizeof(MKL_Complex8));
     if (data == NULL) {
         printf("Erro ao alocar memória\n");
         return 1;
@@ -29,7 +28,6 @@ int main(int argc, char const *argv[]) {
     clock_t start, end;
     double cpu_time_used;
 
-    // Seed para gerar números aleatórios diferentes em cada execução
     //srand(time(NULL));
 
     srand(1);
@@ -38,14 +36,18 @@ int main(int argc, char const *argv[]) {
     for(int i = 0; i < M; i++){
         for(int j = 0; j < N; j++){
             float random_real = (float)rand() / RAND_MAX_F;
-            // Normaliza o número para o intervalo [1, 5]
             float scaled_real = random_real * 4 + 1;
 
-            //data[j + i*N] = scaled_real + 0.0f * I; // Row-Major Layout
-            data[i + j*M] = scaled_real + 0.0f * I; // Column-Major Layout
+            //float random_complex = (float)rand() / RAND_MAX_F;
+            //float scaled_complex = random_real * 3 + 1;
 
-            //printf("(%.2f, %.2f) ", crealf(data[j + i*N]), cimagf(data[j + i*N])); //Row-Major Layout
-            printf("(%.2f, %.2f) ", crealf(data[i + j*M]), cimagf(data[i + j*M])); //Column-Major Layout
+            //data[j + i*N] = scaled_real + 0.0f * I; // Row-Major Layout
+            //printf("(%.2f, %.2f) ", crealf(data[j + i*N]), cimagf(data[j + i*N])); 
+            
+            data[i + j*M].real = scaled_real;
+            data[i + j*M].imag = 0.0f;
+
+            printf("(%.2f, %.2f) ", data[i + j*M].real, data[i + j*M].imag); 
         }
         printf("\n");
     }
@@ -72,22 +74,6 @@ int main(int argc, char const *argv[]) {
     status = DftiSetValue(desc_handle_dim2, DFTI_OUTPUT_STRIDES, stride);
     status = DftiCommitDescriptor(desc_handle_dim2);
 
-    /*MKL_LONG stride[2] = {0, N}; //Row-Major Layout
-    status = DftiSetValue(desc_handle_dim1, DFTI_NUMBER_OF_TRANSFORMS, N);
-    status = DftiSetValue(desc_handle_dim1, DFTI_INPUT_DISTANCE, 1);
-    status = DftiSetValue(desc_handle_dim1, DFTI_OUTPUT_DISTANCE, 1);
-    status = DftiSetValue(desc_handle_dim1, DFTI_INPUT_STRIDES, stride);
-    status = DftiSetValue(desc_handle_dim1, DFTI_OUTPUT_STRIDES, stride);
-    status = DftiCommitDescriptor(desc_handle_dim1);
-
-    status = DftiSetValue(desc_handle_dim2, DFTI_NUMBER_OF_TRANSFORMS, M);
-    status = DftiSetValue(desc_handle_dim2, DFTI_INPUT_DISTANCE, N);
-    status = DftiSetValue(desc_handle_dim2, DFTI_OUTPUT_DISTANCE, N);
-    status = DftiCommitDescriptor(desc_handle_dim2);
-    */
-
-
-    // Medir o tempo de execução da FFT
     start = clock();
 
     // Realizar as transformações FFT
@@ -106,14 +92,12 @@ int main(int argc, char const *argv[]) {
     printf("\nValores de data após a FFT:\n");
     for(int i = 0; i < M; i++){
         for(int j = 0; j < N; j++){
-            //printf("(%.2f, %.2f) ", crealf(data[j + i * N]), cimagf(data[j + i * N])); //Row-Major Layout
-            printf("(%.2f, %.2f) ", crealf(data[i + j * M]), cimagf(data[i + j * M])); //Column-Major Layout
+            printf("(%.2f, %.2f) ", data[i + j * M].real, data[i + j * M].imag);
         }
         printf("\n");
     }
     printf("\n");
 
-    // Liberar a memória alocada dinamicamente
     free(data);
 
     return 0;
