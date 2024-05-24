@@ -14,14 +14,16 @@ int main(int argc, char const *argv[]) {
         return -1;
     }
 
-    int M = atoi(argv[1]);
-    int N = atoi(argv[2]);
+    size_t M = atoi(argv[1]);
+    size_t N = atoi(argv[2]);
 
     MKL_Complex8 *data = (MKL_Complex8 *)malloc(M * N * sizeof(MKL_Complex8));
     if (data == NULL) {
         printf("Erro ao alocar memória\n");
         return 1;
     }
+
+    printf("%.2f GB", M * N * sizeof(MKL_Complex8)/(1024.0f * 1024.0f * 1024.0f));
 
     DFTI_DESCRIPTOR_HANDLE desc_handle_dim1 = NULL;
     DFTI_DESCRIPTOR_HANDLE desc_handle_dim2 = NULL;
@@ -31,7 +33,7 @@ int main(int argc, char const *argv[]) {
 
     srand(1);
 
-    printf("\nValores de data antes da FFT:\n");
+    //printf("\nValores de data antes da FFT:\n");
     for(int i = 0; i < M; i++){
         for(int j = 0; j < N; j++){
             float random_real = (float)rand() / RAND_MAX_F;
@@ -46,9 +48,9 @@ int main(int argc, char const *argv[]) {
             data[i + j*M].real = scaled_real;
             data[i + j*M].imag = 0.0f;
 
-            printf("(%.2f, %.2f) ", data[i + j*M].real, data[i + j*M].imag); 
+            //printf("(%.2f, %.2f) ", data[i + j*M].real, data[i + j*M].imag); 
         }
-        printf("\n");
+        //printf("\n");
     }
     printf("\n");
 
@@ -87,6 +89,7 @@ int main(int argc, char const *argv[]) {
     status = DftiFreeDescriptor(&desc_handle_dim1);
     status = DftiFreeDescriptor(&desc_handle_dim2);
 
+    /*
     printf("\nValores de data após a FFT:\n");
     for(int i = 0; i < M; i++){
         for(int j = 0; j < N; j++){
@@ -95,6 +98,7 @@ int main(int argc, char const *argv[]) {
         printf("\n");
     }
     printf("\n");
+    */
 
     free(data);
 

@@ -13,14 +13,16 @@ int main(int argc, char const *argv[]) {
         return -1;
     }
 
-    int M = atoi(argv[1]);
-    int N = atoi(argv[2]);
+    size_t M = atoi(argv[1]);
+    size_t N = atoi(argv[2]);
 
     MKL_Complex8 *data = (MKL_Complex8 *)malloc(M * N * sizeof(MKL_Complex8));
     if (data == NULL) {
         printf("Erro ao alocar memória\n");
         return 1;
     }
+
+    printf("%.2f GB", M * N * sizeof(MKL_Complex8)/(1024.0f * 1024.0f * 1024.0f));
 
     //srand(time(NULL));
 
@@ -45,11 +47,23 @@ int main(int argc, char const *argv[]) {
     //Fazendo o Vetor B
 
     MKL_Complex8 *VectorB = (MKL_Complex8 *)malloc(M * N * sizeof(MKL_Complex8));
-
     double start = omp_get_wtime();
 
-    int i = 0;
+    /*
+    cblas_ccopy(N, &data[M-1], M, VectorB, M);
+    MKL_Complex8 a = {.real = -1.0f, .imag = 0.0f}; 
 
+    cblas_caxpy(N, &a, data, M, VectorB, M);
+    cblas_caxpy(N, &a, VectorB, M, &VectorB[M-1], M);
+    
+    cblas_caxpy(M, &a, data, 1, VectorB, 1);
+    cblas_caxpy(M, &a, &data[M*(N-1)], 1, &VectorB[M*(N-1)], 1);
+
+    a.real = 1;
+    cblas_caxpy(M, &a, &data[M*(N-1)], 1, VectorB, 1);
+    cblas_caxpy(M, &a, data, 1, &VectorB[M*(N-1)], 1);
+    */
+    
     //Computando as quinas
     VectorB[0].real = data[M-1].real - 2*data[0].real + data[(N-1)*M].real;
     VectorB[0].imag = data[M-1].imag - 2*data[0].imag + data[(N-1)*M].imag;
@@ -82,18 +96,11 @@ int main(int argc, char const *argv[]) {
         VectorB[i + M*(N-1)].imag = VectorB[i].imag*(-1);
     }
 
-    for(int i = 1; i < M-1; i++){
-        for(int j = 1; j < N-1; j++){
-            VectorB[i + j*M].real = 0.0f;
-            VectorB[i + j*M].imag = 0.0f;
-        }
-    }
-
     double end = omp_get_wtime();
     double time_spent = (end - start);
     printf("%f s\n", time_spent);
     
-    /*
+    
     printf("\nValores de B:\n");
     for(int i = 0; i < M; i++){
         for(int j = 0; j < N; j++){
@@ -102,7 +109,7 @@ int main(int argc, char const *argv[]) {
         printf("\n");
     }
     printf("\n");
-    */
+    
 
     free(data);
     free(VectorB);

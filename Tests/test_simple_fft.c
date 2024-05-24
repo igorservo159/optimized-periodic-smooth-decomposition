@@ -14,7 +14,7 @@ int main(int argc, char const *argv[]) {
         return -1;
     }
 
-    int size_of = atoi(argv[1]);
+    size_t size_of = atoi(argv[1]);
 
     float *r2c_data = (float *)malloc(size_of * sizeof(float));
     if (r2c_data == NULL) {
@@ -28,6 +28,13 @@ int main(int argc, char const *argv[]) {
     srand(time(NULL));
 
     //printf("\nValores de r2c_data antes da FFT:\n");
+
+    r2c_data[0] = -2;
+    r2c_data[1] = -4.13;
+    r2c_data[2] = -4.19;
+    r2c_data[3] = -1;
+
+    /*
     for(int i = 0; i < size_of; i++){
         float random_real = (float)rand() / RAND_MAX_F;
         //Normaliza o número para o intervalo [1, 5]
@@ -38,6 +45,7 @@ int main(int argc, char const *argv[]) {
         //printf("%.2f ", r2c_data[i]);
     }
     //printf("\n\n");
+    */
 
     status = DftiCreateDescriptor(&my_desc2_handle, DFTI_SINGLE,
                                   DFTI_REAL, 1, size_of);
@@ -54,13 +62,13 @@ int main(int argc, char const *argv[]) {
 
     status = DftiFreeDescriptor(&my_desc2_handle);
 
-    /*printf("\nValores de r2c_data depois da FFT:\n");
+    printf("\nValores de r2c_data depois da FFT:\n");
     for(int i = 0; i < size_of+2; i++){
         printf("%.2f ", r2c_data[i]);
     }
 
     printf("\n\n");
-    */
+    
 
     free(r2c_data);
 

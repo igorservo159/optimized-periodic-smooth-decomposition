@@ -13,14 +13,17 @@ int main(int argc, char const *argv[]) {
         return -1;
     }
 
-    int M = atoi(argv[1]);
-    int N = atoi(argv[2]);
+    size_t M = atoi(argv[1]);
+    size_t N = atoi(argv[2]);
 
     MKL_Complex8 *data = (MKL_Complex8 *)malloc(M * N * sizeof(MKL_Complex8));
     if (data == NULL) {
         printf("Erro ao alocar memória\n");
         return 1;
     }
+
+    printf("%.2f GB", M * N * sizeof(MKL_Complex8)/(1024.0f * 1024.0f * 1024.0f));
+
 
     //srand(time(NULL));
 
