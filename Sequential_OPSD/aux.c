@@ -93,12 +93,12 @@ void compute_fft2D_column_row(MKL_Complex8 *I_t_I_w, size_t rows, size_t columns
     status = DftiComputeForward(desc_handle_dim1, I_t_I_w);
     status = DftiComputeForward(desc_handle_dim2, I_t_I_w);
 
+    status = DftiFreeDescriptor(&desc_handle_dim1);
+    status = DftiFreeDescriptor(&desc_handle_dim2);
+
     double end = omp_get_wtime();
     double time_spent = (end - start);
     printf("Tempo gasto no step A: %f s\n", time_spent);
-
-    status = DftiFreeDescriptor(&desc_handle_dim1);
-    status = DftiFreeDescriptor(&desc_handle_dim2);
 }
 
 void compute_periodic_border_B(MKL_Complex8 *I_t, MKL_Complex8 *B_t, size_t rows, size_t columns)
@@ -170,17 +170,15 @@ void compute_fft2D_of_B(MKL_Complex8 *B_t_B_w, size_t rows, size_t columns)
         return;
     }
 
-    v[0].real = 0;
-    v[0].imag = 0;
     for (int k = 1; k < rows; k++)
     {
         float theta = -2.0f * PI * (rows - k) / rows;
-        v[k].real = 1 - cosf(theta);
+        v[k].real = 1.0f - cosf(theta);
         v[k].imag = sinf(theta) * (-1);
     }
 
     cblas_ccopy(rows, B_t_B_w, 1, &B_t_B_w[(columns - 1) * rows], 1);
-    cblas_csscal(rows, -1, &B_t_B_w[(columns - 1) * rows], 1);
+    cblas_csscal(rows, -1.0f, &B_t_B_w[(columns - 1) * rows], 1);
     cblas_caxpy(rows, a, v, 1, &B_t_B_w[(columns - 1) * rows], 1);
 
     for (int j = 1; j < columns - 1; j++)
@@ -217,9 +215,9 @@ void compute_fft2D_of_B(MKL_Complex8 *B_t_B_w, size_t rows, size_t columns)
 
 void compute_smooth_component_S(MKL_Complex8 *B_S, size_t rows, size_t columns)
 {
-    MKL_Complex8 aux = {B_S[0].real, B_S[0].imag};
-
     double start = omp_get_wtime();
+
+    MKL_Complex8 aux = {B_S[0].real, B_S[0].imag};
 
     for (int i = 0; i < rows; i++)
     {
