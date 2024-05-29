@@ -22,7 +22,7 @@ int main(int argc, char const *argv[]) {
         return 1;
     }
 
-    printf("%.2f GB", M * N * sizeof(MKL_Complex8)/(1024.0f * 1024.0f * 1024.0f));
+    printf("%.2f GB\n", M * N * sizeof(MKL_Complex8)/(1024.0f * 1024.0f * 1024.0f));
 
     //srand(time(NULL));
 
@@ -37,9 +37,9 @@ int main(int argc, char const *argv[]) {
             data[i + j*M].real = scaled_real;
             data[i + j*M].imag = 0.0f;
 
-            //printf("(%.2f, %.2f) ", data[i + j*M].real, data[i + j*M].imag);
+            printf("(%.2f, %.2f) ", data[i + j*M].real, data[i + j*M].imag);
         }
-        //printf("\n");
+        printf("\n");
     }
     printf("\n");
 

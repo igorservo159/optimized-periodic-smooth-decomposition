@@ -33,20 +33,26 @@ int main(int argc, char const *argv[])
 
     srand(1);
 
+    
+    data[0].real = 0.00f;
+    data[1].real = 2.78f;
+    data[2].real = -3.44f;
+    data[3].real = -7.38f;
+    
+
     // printf("\nValores da Imagem:\n");
     for (int i = 0; i < M; i++)
     {
         for (int j = 0; j < N; j++)
         {
-            float random_real = (float)rand() / RAND_MAX_F;
-            float scaled_real = random_real * 4 + 1;
+            //float random_real = (float)rand() / RAND_MAX_F;
+            //float scaled_real = random_real * 4 + 1;
 
-            data[i + j * M].real = scaled_real;
-            data[i + j * M].imag = 0.0f;
+            //data[i + j * M].real = scaled_real;
 
-            // printf("(%.2f, %.2f) ", data[i + j * M].real, data[i + j * M].imag);
+            printf("(%.2f, %.2f) ", data[i + j * M].real, data[i + j * M].imag);
         }
-        // printf("\n");
+        printf("\n");
     }
     printf("\n");
 
@@ -85,7 +91,7 @@ int main(int argc, char const *argv[])
     double time_spent = (end - start);
     printf("%f s\n", time_spent);
 
-    /*
+    
     printf("\nValores de D:\n");
     for (int i = 0; i < M; i++)
     {
@@ -96,7 +102,7 @@ int main(int argc, char const *argv[])
         printf("\n");
     }
     printf("\n");
-    */
+    
 
     free(data);
 

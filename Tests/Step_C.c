@@ -34,16 +34,16 @@ int main(int argc, char const *argv[]) {
     //Exemplo de matriz B
 
     //Computando as quinas
-    data[0].real = 1.0f;
+    data[0].real = -2.01f;
     data[0].imag = 0.0f;
 
-    data[M-1].real = 2.0f;
+    data[M-1].real = 0.29f;
     data[M-1].imag = 0.0f;
 
-    data[(N-1)*M].real = -2.0f;
+    data[(N-1)*M].real = 3.40f;
     data[(N-1)*M].imag = 0.0f;
 
-    data[M-1 + (N-1)*M].real = -1.0f;
+    data[M-1 + (N-1)*M].real = -1.68f;
     data[M-1 + (N-1)*M].imag = 0.0f;
 
 

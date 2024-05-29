@@ -63,6 +63,8 @@ void fill(MKL_Complex8 *matrix, size_t rows, size_t columns, unsigned int seed)
 
 void compute_fft2D_column_row(MKL_Complex8 *I_t_I_w, size_t rows, size_t columns)
 {
+    double start = omp_get_wtime();
+
     DFTI_DESCRIPTOR_HANDLE desc_handle_dim1 = NULL;
     DFTI_DESCRIPTOR_HANDLE desc_handle_dim2 = NULL;
     MKL_LONG status;
@@ -86,7 +88,6 @@ void compute_fft2D_column_row(MKL_Complex8 *I_t_I_w, size_t rows, size_t columns
     status = DftiSetValue(desc_handle_dim2, DFTI_OUTPUT_STRIDES, stride);
     status = DftiCommitDescriptor(desc_handle_dim2);
 
-    double start = omp_get_wtime();
 
     // Realizar as transformações FFT
     status = DftiComputeForward(desc_handle_dim1, I_t_I_w);
@@ -94,7 +95,7 @@ void compute_fft2D_column_row(MKL_Complex8 *I_t_I_w, size_t rows, size_t columns
 
     double end = omp_get_wtime();
     double time_spent = (end - start);
-    printf("Tempo gasto: %f s\n", time_spent);
+    printf("Tempo gasto no step A: %f s\n", time_spent);
 
     status = DftiFreeDescriptor(&desc_handle_dim1);
     status = DftiFreeDescriptor(&desc_handle_dim2);
@@ -138,7 +139,7 @@ void compute_periodic_border_B(MKL_Complex8 *I_t, MKL_Complex8 *B_t, size_t rows
 
     double end = omp_get_wtime();
     double time_spent = (end - start);
-    printf("Tempo gasto: %f s\n", time_spent);
+    printf("Tempo gasto no step B: %f s\n", time_spent);
 }
 
 void compute_fft2D_of_B(MKL_Complex8 *B_t_B_w, size_t rows, size_t columns)
@@ -166,7 +167,7 @@ void compute_fft2D_of_B(MKL_Complex8 *B_t_B_w, size_t rows, size_t columns)
     if (v == NULL)
     {
         printf("Erro ao alocar memória\n");
-        return 1;
+        return;
     }
 
     v[0].real = 0;
@@ -211,7 +212,7 @@ void compute_fft2D_of_B(MKL_Complex8 *B_t_B_w, size_t rows, size_t columns)
 
     double end = omp_get_wtime();
     double time_spent = (end - start);
-    printf("%f s\n", time_spent);
+    printf("Tempo gasto no step C: %f s\n", time_spent);
 }
 
 void compute_smooth_component_S(MKL_Complex8 *B_S, size_t rows, size_t columns)
@@ -234,10 +235,14 @@ void compute_smooth_component_S(MKL_Complex8 *B_S, size_t rows, size_t columns)
 
     double end = omp_get_wtime();
     double time_spent = (end - start);
-    printf("Tempo gasto: %f s\n", time_spent);
+    printf("Tempo gasto no step D: %f s\n", time_spent);
 }
 
 void compute_periodic_component_P(MKL_Complex8 *I_w, MKL_Complex8 *S, size_t rows, size_t columns)
 {
+    double start = omp_get_wtime();
     vcSub(rows * columns, I_w, S, I_w);
+    double end = omp_get_wtime();
+    double time_spent = (end - start);
+    printf("Tempo gasto no step E: %f s\n", time_spent);
 }

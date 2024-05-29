@@ -23,7 +23,7 @@ int main(int argc, char const *argv[]) {
         return 1;
     }
 
-    printf("%.2f GB", M * N * sizeof(MKL_Complex8)/(1024.0f * 1024.0f * 1024.0f));
+    printf("%.2f GB\n", M * N * sizeof(MKL_Complex8)/(1024.0f * 1024.0f * 1024.0f));
 
     DFTI_DESCRIPTOR_HANDLE desc_handle_dim1 = NULL;
     DFTI_DESCRIPTOR_HANDLE desc_handle_dim2 = NULL;
@@ -48,9 +48,9 @@ int main(int argc, char const *argv[]) {
             data[i + j*M].real = scaled_real;
             data[i + j*M].imag = 0.0f;
 
-            //printf("(%.2f, %.2f) ", data[i + j*M].real, data[i + j*M].imag); 
+            printf("(%.2f, %.2f) ", data[i + j*M].real, data[i + j*M].imag); 
         }
-        //printf("\n");
+        printf("\n");
     }
     printf("\n");
 
@@ -89,7 +89,6 @@ int main(int argc, char const *argv[]) {
     status = DftiFreeDescriptor(&desc_handle_dim1);
     status = DftiFreeDescriptor(&desc_handle_dim2);
 
-    /*
     printf("\nValores de data após a FFT:\n");
     for(int i = 0; i < M; i++){
         for(int j = 0; j < N; j++){
@@ -98,7 +97,6 @@ int main(int argc, char const *argv[]) {
         printf("\n");
     }
     printf("\n");
-    */
 
     free(data);
 
