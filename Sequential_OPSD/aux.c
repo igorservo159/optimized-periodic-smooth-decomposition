@@ -56,6 +56,7 @@ void fill(MKL_Complex8 *matrix, size_t rows, size_t columns, unsigned int seed)
             // float scaled_complex = random_real * 3 + 1;
 
             matrix[i + j * rows].real = scaled_real;
+            //matrix[i + j * rows].real = 1.0f;
             matrix[i + j * rows].imag = 0.0f;
         }
     }

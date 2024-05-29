@@ -1,0 +1,31 @@
+# AMPLXE_PERF_STAT
+# hostname : igor-OptiPlex-3070
+# os release : 6.5.0-35-generic
+# arch : x86_64
+# cpuid : GenuineIntel,6,158,10
+# cpudesc : Intel(R) Core(TM) i5-9500 CPU @ 3.00GHz
+# total memory : 16172064 kB
+# nrcpus online : 6
+# nrcpus avail : 6
+# sibling cores : 0-5
+# sibling threads : 0
+# sibling threads : 1
+# sibling threads : 2
+# sibling threads : 3
+# sibling threads : 4
+# sibling threads : 5
+# process id : 45917
+;;92083244185;0
+;;68109604625;1
+;;47806121499;2
+;;544446533;3
+;;544550157;4
+;;406002985;5
+;;2225999263;6
+;;2863488248;7
+;;4597;8
+;;197994464;9
+;;0;10
+;;409745848;11
+;;52537518082;12
+;;56704421262;13
