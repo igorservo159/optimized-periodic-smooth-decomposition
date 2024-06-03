@@ -14,13 +14,16 @@ int main(int argc, char const *argv[])
     size_t columns = atoi(argv[2]);
 
     MKL_Complex8 *I_t = NULL;
-    init(&I_t, rows, columns);
-    fill(I_t, rows, columns, 1);
+    init_complex_matrix(&I_t, rows, columns);
+
+    read_matrix(I_t, rows, columns);
+
+    //fill(I_t, rows, columns, 1);
 
     // show_matrix(I_t, rows, columns);
 
     MKL_Complex8 *B_t = NULL;
-    init(&B_t, rows, columns);
+    init_complex_matrix(&B_t, rows, columns);
 
     double start_ = omp_get_wtime();
 

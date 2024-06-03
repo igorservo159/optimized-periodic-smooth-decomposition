@@ -1,22 +1,32 @@
 #include "aux.h"
 
-int init(MKL_Complex8 **matrix, size_t rows, size_t columns)
+void init_complex_matrix(MKL_Complex8 **matrix, size_t rows, size_t columns)
 {
     (*matrix) = (MKL_Complex8 *)malloc(rows * columns * sizeof(MKL_Complex8));
     if ((*matrix) == NULL)
     {
         printf("Allocation error!\n");
         free(*matrix);
-        return -1;
+        return;
     }
+}
 
-    return 0;
+void init_float_vector(float **v, size_t size)
+{
+    (*v) = (float *)malloc(size * sizeof(float));
+    if ((*v) == NULL)
+    {
+        printf("Allocation error!\n");
+        free(*v);
+        return;
+    }
 }
 
 void free_matrix(MKL_Complex8 *matrix)
 {
     if (matrix == NULL)
     {
+        printf("Matrix not found!\n");
         return;
     }
 
@@ -25,6 +35,12 @@ void free_matrix(MKL_Complex8 *matrix)
 
 void show_matrix(MKL_Complex8 *matrix, size_t rows, size_t columns)
 {
+    if (matrix == NULL)
+    {
+        printf("Matrix not found!\n");
+        return;
+    }
+
     printf("\nMatriz:\n");
     for (int i = 0; i < rows; i++)
     {
@@ -44,6 +60,12 @@ void show_ram_allocation(size_t rows, size_t columns)
 
 void fill(MKL_Complex8 *matrix, size_t rows, size_t columns, unsigned int seed)
 {
+    if (matrix == NULL)
+    {
+        printf("Matrix not found!\n");
+        return;
+    }
+
     srand(seed);
     for (int i = 0; i < rows; i++)
     {
@@ -64,6 +86,12 @@ void fill(MKL_Complex8 *matrix, size_t rows, size_t columns, unsigned int seed)
 
 void compute_fft2D_column_row(MKL_Complex8 *I_t_I_w, size_t rows, size_t columns)
 {
+    if (I_t_I_w == NULL)
+    {
+        printf("Matrix not found!\n");
+        return;
+    }
+
     double start = omp_get_wtime();
 
     DFTI_DESCRIPTOR_HANDLE desc_handle_dim1 = NULL;
@@ -103,6 +131,12 @@ void compute_fft2D_column_row(MKL_Complex8 *I_t_I_w, size_t rows, size_t columns
 
 void compute_periodic_border_B(MKL_Complex8 *I_t, MKL_Complex8 *B_t, size_t rows, size_t columns)
 {
+    if (I_t == NULL || B_t == NULL)
+    {
+        printf("Matrix not found!\n");
+        return;
+    }
+
     double start = omp_get_wtime();
 
     B_t[0].real = I_t[rows - 1].real - 2 * I_t[0].real + I_t[(columns - 1) * rows].real;
@@ -144,6 +178,12 @@ void compute_periodic_border_B(MKL_Complex8 *I_t, MKL_Complex8 *B_t, size_t rows
 
 void compute_fft2D_of_B(MKL_Complex8 *B_t_B_w, size_t rows, size_t columns)
 {
+    if (B_t_B_w == NULL)
+    {
+        printf("Matrix not found!\n");
+        return;
+    }
+
     double start = omp_get_wtime();
 
     // Column-one FFT
@@ -218,6 +258,12 @@ void compute_fft2D_of_B(MKL_Complex8 *B_t_B_w, size_t rows, size_t columns)
 
 void compute_smooth_component_S(MKL_Complex8 *B_S, size_t rows, size_t columns)
 {
+    if (B_S == NULL)
+    {
+        printf("Matrix not found!\n");
+        return;
+    }
+
     double start = omp_get_wtime();
 
     MKL_Complex8 aux = {B_S[0].real, B_S[0].imag};
@@ -242,9 +288,65 @@ void compute_smooth_component_S(MKL_Complex8 *B_S, size_t rows, size_t columns)
 
 void compute_periodic_component_P(MKL_Complex8 *I_w, MKL_Complex8 *S, size_t rows, size_t columns)
 {
+    if (I_w == NULL || S == NULL)
+    {
+        printf("Matrix not found!\n");
+        return;
+    }
+    
     double start = omp_get_wtime();
     vcSub(rows * columns, I_w, S, I_w);
     double end = omp_get_wtime();
     double time_spent = (end - start);
     printf("Tempo gasto no step E: %f s\n", time_spent);
+}
+
+void read_binary(float *v, size_t size) {
+    FILE *fp;
+
+    fp = fopen("../toy2024_cp0_5m.bin", "rb");
+    if (!fp) {
+        perror("Error opening file ../toy2024_cp0_5m.bin");
+        exit(1);
+    }
+
+    size_t elements_read = fread(v, sizeof(float), size, fp);
+    if (elements_read != size) {
+        if (feof(fp)) {
+            fprintf(stderr, "Error: unexpected end of file\n");
+        } else if (ferror(fp)) {
+            perror("Error reading file");
+        }
+        fclose(fp);
+        exit(1);
+    }
+
+    fclose(fp);
+}
+
+void read_matrix(MKL_Complex8 *matrix, size_t rows, size_t columns){
+    float *v = NULL;
+    init_float_vector(&v, rows*columns);
+    read_binary(v, rows*columns);
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < columns; j++)
+        {
+            matrix[i + j * rows].real = v[j + i * columns];
+        }
+    }
+
+    free(v);
+    
+    printf("\nMatriz:\n");
+    for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 10; j++)
+        {
+            printf("(%.2f + I%.2f  ) ", matrix[j + i * columns].real, matrix[j + i * columns].imag);
+        }
+        printf("\n");
+    }
+    printf("\n");
 }

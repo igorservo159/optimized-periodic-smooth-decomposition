@@ -14,13 +14,16 @@ int main(int argc, char const *argv[])
     size_t columns = atoi(argv[2]);
 
     MKL_Complex8 *I_t = NULL;
-    init(&I_t, rows, columns);
+    init_complex_matrix(&I_t, rows, columns);
+
+    //read_matrix(I_t, rows, columns);    
+
     fill(I_t, rows, columns, 1);
 
     // show_matrix(I_t, rows, columns);
 
     MKL_Complex8 *B_t = NULL;
-    init(&B_t, rows, columns);
+    init_complex_matrix(&B_t, rows, columns);
 
     double start_ = omp_get_wtime();
 
@@ -35,7 +38,7 @@ int main(int argc, char const *argv[])
     double time_spent_ = (end_ - start_);
     printf("Tempo total gasto: %f s\n", time_spent_);
 
-    // show_matrix(I_t, rows, columns);
+    //show_matrix(I_t, rows, columns);
 
     free_matrix(B_t);
     free_matrix(I_t);
