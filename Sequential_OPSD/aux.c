@@ -56,7 +56,7 @@ void fill(MKL_Complex8 *matrix, size_t rows, size_t columns, unsigned int seed)
             // float scaled_complex = random_real * 3 + 1;
 
             matrix[i + j * rows].real = scaled_real;
-            //matrix[i + j * rows].real = 1.0f;
+            // matrix[i + j * rows].real = 1.0f;
             matrix[i + j * rows].imag = 0.0f;
         }
     }
@@ -88,7 +88,6 @@ void compute_fft2D_column_row(MKL_Complex8 *I_t_I_w, size_t rows, size_t columns
     status = DftiSetValue(desc_handle_dim2, DFTI_INPUT_STRIDES, stride);
     status = DftiSetValue(desc_handle_dim2, DFTI_OUTPUT_STRIDES, stride);
     status = DftiCommitDescriptor(desc_handle_dim2);
-
 
     // Realizar as transformações FFT
     status = DftiComputeForward(desc_handle_dim1, I_t_I_w);
@@ -171,6 +170,9 @@ void compute_fft2D_of_B(MKL_Complex8 *B_t_B_w, size_t rows, size_t columns)
         return;
     }
 
+    v[0].real = 0.00f;
+    v[0].imag = 0.00f;
+
     for (int k = 1; k < rows; k++)
     {
         float theta = -2.0f * PI * (rows - k) / rows;
@@ -224,8 +226,9 @@ void compute_smooth_component_S(MKL_Complex8 *B_S, size_t rows, size_t columns)
     {
         for (int j = 0; j < columns; j++)
         {
-            B_S[i + j * rows].real /= (2.0f * cosf(2.0f * PI * i / rows) + 2.0f * cosf(2.0f * PI * j / columns) - 4.0f);
-            B_S[i + j * rows].imag /= (2.0f * cosf(2.0f * PI * i / rows) + 2.0f * cosf(2.0f * PI * j / columns) - 4.0f);
+            float denom = (2.0f * cosf(2.0f * PI * i / rows) + 2.0f * cosf(2.0f * PI * j / columns) - 4.0f);
+            B_S[i + j * rows].real /= denom;
+            B_S[i + j * rows].imag /= denom;
         }
     }
 

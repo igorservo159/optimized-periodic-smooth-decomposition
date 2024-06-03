@@ -6,3 +6,49 @@ Para compilar o código, certifique-se de ter a biblioteca Intel MKL instalada e
 
 ```bash
 icx -o example example.c -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm -ldl -qopenmp
+```
+
+## Perfilar Código com VTune
+
+Para perfilar o código, certifique-se de ter o software instalado e use o seguinte comando:
+
+```bash
+vtune -collect hotspots -result-dir=results ./example
+```
+
+Você pode checar os resultados com:
+
+```bash
+vtune-gui results
+```
+
+Se precisar, utilize o seguinte comando para habilitar o VTune:
+
+```bash
+source /opt/intel/oneapi/vtune/latest/env/vars.sh
+```
+
+
+## Configuração JSON
+
+Abaixo está um exemplo de configuração JSON que pode ser usada no seu ambiente.
+
+```json
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${default}",
+                "${workspaceFolder}/**",
+                "/opt/intel/oneapi/compiler/latest/include"
+            ],
+            "defines": [],
+            "compilerPath": "/opt/intel/oneapi/compiler/latest/bin/icx",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-clang-x64"
+        }
+    ],
+    "version": 4
+}
