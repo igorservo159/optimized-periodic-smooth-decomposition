@@ -14,6 +14,7 @@ def plot_spectrum(matrix, save_path=None):
         
     magnitude_log = np.log(magnitude + 1)
     
+    plt.figure(figsize=(10, 6))
     plt.imshow(magnitude_log, cmap='viridis', aspect='auto')
     plt.colorbar(label='Magnitude (log scale)')
     plt.title('Magnitude Spectrum')
@@ -26,5 +27,5 @@ def plot_spectrum(matrix, save_path=None):
 
 if __name__ == "__main__":
     rows, columns = 1201, 401
-    spectrum = read_complex_matrix("../bin/tests/periodic.bin", rows, columns)
-    plot_spectrum(spectrum.T, "../img/tests/periodic.png")
+    spectrum = read_complex_matrix("../bin/tests/spectrum.bin", rows, columns)
+    plot_spectrum(spectrum.T, "../img/tests/spectrum.png")

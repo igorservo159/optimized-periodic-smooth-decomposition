@@ -84,6 +84,32 @@ void fill(MKL_Complex8 *matrix, size_t rows, size_t columns, unsigned int seed)
     }
 }
 
+void compute_fft2d(MKL_Complex8 *I_t_I_w, size_t rows, size_t columns){
+    if (I_t_I_w == NULL)
+    {
+        printf("Matrix not found!\n");
+        return;
+    }
+
+    double start = omp_get_wtime();
+
+    DFTI_DESCRIPTOR_HANDLE desc_handle_dim1 = NULL;
+    MKL_LONG status;
+    MKL_LONG dim_sizes[2] = {rows, columns};
+
+    status = DftiCreateDescriptor(&desc_handle_dim1, DFTI_SINGLE,
+                                  DFTI_COMPLEX, 2, dim_sizes);
+    
+    status = DftiCommitDescriptor(desc_handle_dim1);
+    status = DftiComputeForward(desc_handle_dim1, I_t_I_w);
+
+    status = DftiFreeDescriptor(&desc_handle_dim1);
+
+    double end = omp_get_wtime();
+    double time_spent = (end - start);
+    printf("Tempo gasto na fft2D: %f s\n", time_spent);
+}
+
 void compute_fft2D_column_row(MKL_Complex8 *I_t_I_w, size_t rows, size_t columns)
 {
     if (I_t_I_w == NULL)
@@ -103,16 +129,20 @@ void compute_fft2D_column_row(MKL_Complex8 *I_t_I_w, size_t rows, size_t columns
     status = DftiCreateDescriptor(&desc_handle_dim2, DFTI_SINGLE,
                                   DFTI_COMPLEX, 1, columns);
 
-    MKL_LONG stride[2] = {0, rows};
+    MKL_LONG stride[2] = {0, columns};
 
     status = DftiSetValue(desc_handle_dim1, DFTI_NUMBER_OF_TRANSFORMS, columns);
-    status = DftiSetValue(desc_handle_dim1, DFTI_INPUT_DISTANCE, rows);
-    status = DftiSetValue(desc_handle_dim1, DFTI_OUTPUT_DISTANCE, rows);
+    status = DftiSetValue(desc_handle_dim1, DFTI_INPUT_STRIDES, stride);
+    status = DftiSetValue(desc_handle_dim1, DFTI_OUTPUT_STRIDES, stride);
+    status = DftiSetValue(desc_handle_dim1, DFTI_INPUT_DISTANCE, 1);
+    status = DftiSetValue(desc_handle_dim1, DFTI_OUTPUT_DISTANCE, 1);
     status = DftiCommitDescriptor(desc_handle_dim1);
 
+    stride[1] = 1;
+
     status = DftiSetValue(desc_handle_dim2, DFTI_NUMBER_OF_TRANSFORMS, rows);
-    status = DftiSetValue(desc_handle_dim2, DFTI_INPUT_DISTANCE, 1);
-    status = DftiSetValue(desc_handle_dim2, DFTI_OUTPUT_DISTANCE, 1);
+    status = DftiSetValue(desc_handle_dim2, DFTI_INPUT_DISTANCE, columns);
+    status = DftiSetValue(desc_handle_dim2, DFTI_OUTPUT_DISTANCE, columns);
     status = DftiSetValue(desc_handle_dim2, DFTI_INPUT_STRIDES, stride);
     status = DftiSetValue(desc_handle_dim2, DFTI_OUTPUT_STRIDES, stride);
     status = DftiCommitDescriptor(desc_handle_dim2);
@@ -333,7 +363,7 @@ void read_matrix(MKL_Complex8 *matrix, size_t rows, size_t columns){
     {
         for (int j = 0; j < columns; j++)
         {
-            matrix[i + j * rows].real = v[j + i * columns];
+            matrix[j + i * columns].real = v[j + i * columns];
         }
     }
 
