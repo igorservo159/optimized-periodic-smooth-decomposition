@@ -29,5 +29,6 @@ void compute_smooth_component_S_2(MKL_Complex8 *B_S, size_t rows, size_t columns
 void compute_periodic_component_P(MKL_Complex8 *I_w, MKL_Complex8 *S, size_t rows, size_t columns);
 void read_binary(float *v, size_t size);
 void read_matrix(MKL_Complex8 *matrix, size_t rows, size_t columns);
+void save_complex_matrix(const char *filename, MKL_Complex8 *matrix, size_t rows, size_t columns);
 
 #endif

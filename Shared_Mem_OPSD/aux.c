@@ -556,3 +556,14 @@ void read_matrix(MKL_Complex8 *matrix, size_t rows, size_t columns){
     }
     printf("\n");
 }
+
+
+void save_complex_matrix(const char *filename, MKL_Complex8 *matrix, size_t rows, size_t columns) {
+    FILE *file = fopen(filename, "wb");
+    if (file == NULL) {
+        perror("Erro ao abrir o arquivo para escrita");
+        exit(EXIT_FAILURE);
+    }
+    fwrite(matrix, sizeof(MKL_Complex8), rows * columns, file);
+    fclose(file);
+}
