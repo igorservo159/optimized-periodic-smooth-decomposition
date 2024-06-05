@@ -304,9 +304,9 @@ void compute_periodic_component_P(MKL_Complex8 *I_w, MKL_Complex8 *S, size_t row
 void read_binary(float *v, size_t size) {
     FILE *fp;
 
-    fp = fopen("../toy2024_cp0_5m.bin", "rb");
+    fp = fopen("../bin/tests/toy2024_cp0_5m.bin", "rb");
     if (!fp) {
-        perror("Error opening file ../toy2024_cp0_5m.bin");
+        perror("Error opening file ../bin/tests/toy2024_cp0_5m.bin");
         exit(1);
     }
 

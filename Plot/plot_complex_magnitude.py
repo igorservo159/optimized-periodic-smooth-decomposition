@@ -9,13 +9,9 @@ def read_complex_matrix(filename, rows, columns):
         matrix = data.reshape((rows, columns))
     return matrix
 
-def plot_spectrum(matrix):
+def plot_spectrum(matrix, save_path=None):
     magnitude = np.abs(matrix)
-    
-    # Verificar os valores da magnitude
-    print(f'Magnitude Min: {magnitude.min()}, Max: {magnitude.max()}')
-    
-    # Aplicar transformação logarítmica
+        
     magnitude_log = np.log(magnitude + 1)
     
     plt.imshow(magnitude_log, cmap='viridis', aspect='auto')
@@ -23,9 +19,12 @@ def plot_spectrum(matrix):
     plt.title('Magnitude Spectrum')
     plt.xlabel('X')
     plt.ylabel('Y')
-    plt.show()
+    if save_path:
+        plt.savefig(save_path)
+    else:
+        plt.show()
 
 if __name__ == "__main__":
     rows, columns = 1201, 401
-    spectrum = read_complex_matrix("../spectrum.bin", rows, columns)
-    plot_spectrum(spectrum)
+    spectrum = read_complex_matrix("../bin/tests/periodic.bin", rows, columns)
+    plot_spectrum(spectrum.T, "../img/tests/periodic.png")

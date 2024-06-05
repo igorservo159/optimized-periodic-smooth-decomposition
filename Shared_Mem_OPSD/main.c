@@ -40,8 +40,6 @@ int main(int argc, char const *argv[])
 
     //show_matrix(I_t, rows, columns);
 
-    save_complex_matrix("../spectrum.bin", I_t, rows, columns);
-
     free_matrix(B_t);
     free_matrix(I_t);
 }

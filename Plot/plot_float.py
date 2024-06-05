@@ -6,7 +6,7 @@ nx, nz = 1201, 401
 dx, dz = 5, 5  # Resoluções espaciais
 
 # Ler o arquivo binário
-filename = '../toy2024_cp0_5m.bin'
+filename = '../bin/tests/toy2024_cp0_5m.bin'
 data = np.fromfile(filename, dtype=np.float32)
 
 # Verificar se o tamanho dos dados está correto
@@ -24,4 +24,4 @@ plt.colorbar(label='Amplitude')
 plt.title('Modelo Original')
 plt.xlabel('Distância X (m)')
 plt.ylabel('Profundidade Z (m)')
-plt.show()
+plt.savefig("../img/tests/image.png")
