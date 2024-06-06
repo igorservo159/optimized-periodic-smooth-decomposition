@@ -54,4 +54,4 @@ Abaixo está um exemplo de configuração JSON que pode ser usada no seu ambient
 }
 ```
 
-[Para mais informações sobre o algoritmo que embasa este projeto, consulte o seguinte artigo:](https://onlinelibrary.wiley.com/doi/10.1155/2018/1403181)
+[Clique aqui para acessar o artigo que explica mais sobre o algoritmo e que embasa este projeto!](https://onlinelibrary.wiley.com/doi/10.1155/2018/1403181)
