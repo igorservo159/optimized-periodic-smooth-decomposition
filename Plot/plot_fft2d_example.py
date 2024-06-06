@@ -23,7 +23,7 @@ plt.show()
 # Cálculo da FFT2D
 fft_image = fft2(image_data)
 fft_image_shifted = fftshift(fft_image)
-magnitude_spectrum = np.log(np.abs(fft_image_shifted) + 1)  # Adiciona 1 para evitar log(0)
+magnitude_spectrum = np.log(np.abs(fft_image) + 1)  # Adiciona 1 para evitar log(0)
 
 # Plot do espectro da FFT2D
 plt.figure(figsize=(10, 6))

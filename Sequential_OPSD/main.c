@@ -22,21 +22,20 @@ int main(int argc, char const *argv[])
 
     // show_matrix(I_t, rows, columns);
 
-    //MKL_Complex8 *B_t = NULL;
-    //init_complex_matrix(&B_t, rows, columns);
+    MKL_Complex8 *B_t = NULL;
+    init_complex_matrix(&B_t, rows, columns);
 
     double start_ = omp_get_wtime();
 
-    //compute_periodic_border_B(I_t, B_t, rows, columns);
+    compute_periodic_border_B(I_t, B_t, rows, columns);
     compute_fft2D_column_row(I_t, rows, columns);
     save_complex_matrix("../bin/tests/spectrum.bin", I_t, rows, columns);
-
     // show_matrix(I_t, rows, columns);
-    //compute_fft2D_of_B(B_t, rows, columns);
-    //compute_smooth_component_S(B_t, rows, columns);
-    //save_complex_matrix("../bin/tests/smooth.bin", B_t, rows, columns);
-    //compute_periodic_component_P(I_t, B_t, rows, columns);
-    //save_complex_matrix("../bin/tests/periodic.bin", I_t, rows, columns);
+    compute_fft2D_of_B(B_t, rows, columns);
+    compute_smooth_component_S(B_t, rows, columns);
+    save_complex_matrix("../bin/tests/smooth.bin", B_t, rows, columns);
+    compute_periodic_component_P(I_t, B_t, rows, columns);
+    save_complex_matrix("../bin/tests/periodic.bin", I_t, rows, columns);
 
     double end_ = omp_get_wtime();
     double time_spent_ = (end_ - start_);
@@ -44,6 +43,6 @@ int main(int argc, char const *argv[])
 
     // show_matrix(I_t, rows, columns);
 
-    //free_matrix(B_t);
+    free_matrix(B_t);
     free_matrix(I_t);
 }

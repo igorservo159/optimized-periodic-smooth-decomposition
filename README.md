@@ -52,3 +52,6 @@ Abaixo está um exemplo de configuração JSON que pode ser usada no seu ambient
     ],
     "version": 4
 }
+```json
+
+[Para mais informações sobre o algoritmo que embasa este projeto, consulte o seguinte artigo: ](https://onlinelibrary.wiley.com/doi/10.1155/2018/1403181)

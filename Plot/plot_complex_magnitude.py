@@ -27,5 +27,5 @@ def plot_spectrum(matrix, save_path=None):
 
 if __name__ == "__main__":
     rows, columns = 1201, 401
-    spectrum = read_complex_matrix("../bin/tests/spectrum.bin", rows, columns)
-    plot_spectrum(spectrum.T, "../img/tests/spectrum.png")
+    spectrum = read_complex_matrix("../bin/tests/smooth.bin", rows, columns)
+    plot_spectrum(spectrum.T, "../img/tests/smooth.png")

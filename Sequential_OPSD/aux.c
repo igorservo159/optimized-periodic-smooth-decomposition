@@ -46,7 +46,7 @@ void show_matrix(MKL_Complex8 *matrix, size_t rows, size_t columns)
     {
         for (int j = 0; j < columns; j++)
         {
-            printf("(%.2f, %.2f) ", matrix[i + j * rows].real, matrix[i + j * rows].imag);
+            printf("(%.2f, %.2f) ", matrix[j + i * columns].real, matrix[j + i * columns].imag);
         }
         printf("\n");
     }
@@ -169,36 +169,36 @@ void compute_periodic_border_B(MKL_Complex8 *I_t, MKL_Complex8 *B_t, size_t rows
 
     double start = omp_get_wtime();
 
-    B_t[0].real = I_t[rows - 1].real - 2 * I_t[0].real + I_t[(columns - 1) * rows].real;
-    B_t[0].imag = I_t[rows - 1].imag - 2 * I_t[0].imag + I_t[(columns - 1) * rows].imag;
+    B_t[0].real = I_t[columns - 1].real - 2 * I_t[0].real + I_t[(rows - 1) * columns].real;
+    B_t[0].imag = I_t[columns - 1].imag - 2 * I_t[0].imag + I_t[(rows - 1) * columns].imag;
 
-    B_t[rows - 1].real = I_t[0].real - 2 * I_t[rows - 1].real + I_t[rows - 1 + (columns - 1) * rows].real;
-    B_t[rows - 1].imag = I_t[0].imag - 2 * I_t[rows - 1].imag + I_t[rows - 1 + (columns - 1) * rows].imag;
+    B_t[columns - 1].real = I_t[0].real - 2 * I_t[columns - 1].real + I_t[rows * columns - 1].real;
+    B_t[columns - 1].imag = I_t[0].imag - 2 * I_t[columns - 1].imag + I_t[rows * columns - 1].imag;
 
-    B_t[(columns - 1) * rows].real = I_t[0].real - 2 * I_t[(columns - 1) * rows].real + I_t[rows - 1 + (columns - 1) * rows].real;
-    B_t[(columns - 1) * rows].imag = I_t[0].imag - 2 * I_t[(columns - 1) * rows].imag + I_t[rows - 1 + (columns - 1) * rows].imag;
+    B_t[(rows - 1) * columns].real = I_t[0].real - 2 * I_t[(rows - 1) * columns].real + I_t[rows * columns - 1].real;
+    B_t[(rows - 1) * columns].imag = I_t[0].imag - 2 * I_t[(rows - 1) * columns].imag + I_t[rows * columns - 1].imag;
 
-    B_t[rows - 1 + (columns - 1) * rows].real = I_t[rows - 1].real - 2 * I_t[rows - 1 + (columns - 1) * rows].real + I_t[(columns - 1) * rows].real;
-    B_t[rows - 1 + (columns - 1) * rows].imag = I_t[rows - 1].imag - 2 * I_t[rows - 1 + (columns - 1) * rows].imag + I_t[(columns - 1) * rows].imag;
+    B_t[rows * columns - 1].real = I_t[columns - 1].real - 2 * I_t[rows * columns - 1].real + I_t[(rows - 1) * columns].real;
+    B_t[rows * columns - 1].imag = I_t[columns - 1].imag - 2 * I_t[rows * columns - 1].imag + I_t[(rows - 1) * columns].imag;
 
     // linha 0 e rows-1
     for (int j = 1; j < columns - 1; j++)
     {
-        B_t[j * rows].real = I_t[j * rows + rows - 1].real - I_t[j * rows].real;
-        B_t[j * rows].imag = I_t[j * rows + rows - 1].imag - I_t[j * rows].imag;
+        B_t[j].real = I_t[j + (rows - 1) * columns].real - I_t[j].real;
+        B_t[j].imag = I_t[j + (rows - 1) * columns].imag - I_t[j].imag;
 
-        B_t[j * rows + rows - 1].real = B_t[j * rows].real * (-1);
-        B_t[j * rows + rows - 1].imag = B_t[j * rows].imag * (-1);
+        B_t[j + (rows - 1) * columns].real = B_t[j].real * (-1);
+        B_t[j + (rows - 1) * columns].imag = B_t[j].imag * (-1);
     }
 
     // coluna 0 e columns-1
     for (int i = 1; i < rows - 1; i++)
     {
-        B_t[i].real = I_t[i + rows * (columns - 1)].real - I_t[i].real;
-        B_t[i].imag = I_t[i + rows * (columns - 1)].imag - I_t[i].imag;
+        B_t[i * columns].real = I_t[columns - 1 + i * columns].real - I_t[i * columns].real;
+        B_t[i * columns].imag = I_t[columns - 1 + i * columns].imag - I_t[i * columns].imag;
 
-        B_t[i + rows * (columns - 1)].real = B_t[i].real * (-1);
-        B_t[i + rows * (columns - 1)].imag = B_t[i].imag * (-1);
+        B_t[columns - 1 + i * columns].real = B_t[i * columns].real * (-1);
+        B_t[columns - 1 + i * columns].imag = B_t[i * columns].imag * (-1);
     }
 
     double end = omp_get_wtime();
@@ -218,8 +218,8 @@ void compute_fft2D_of_B(MKL_Complex8 *B_t_B_w, size_t rows, size_t columns)
 
     // Column-one FFT
     MKL_Complex8 *a = (MKL_Complex8 *)malloc(sizeof(MKL_Complex8));
-    a->real = B_t_B_w[0].real + B_t_B_w[(columns - 1) * rows].real;
-    a->imag = B_t_B_w[0].imag + B_t_B_w[(columns - 1) * rows].imag;
+    a->real = B_t_B_w[0].real + B_t_B_w[columns - 1].real;
+    a->imag = B_t_B_w[0].imag + B_t_B_w[columns - 1].imag;
 
     DFTI_DESCRIPTOR_HANDLE desc_handle_dim1 = NULL;
     MKL_LONG status;
@@ -227,7 +227,11 @@ void compute_fft2D_of_B(MKL_Complex8 *B_t_B_w, size_t rows, size_t columns)
     status = DftiCreateDescriptor(&desc_handle_dim1, DFTI_SINGLE,
                                   DFTI_COMPLEX, 1, rows);
 
+    MKL_LONG stride[2] = {0, columns};
+
     status = DftiSetValue(desc_handle_dim1, DFTI_NUMBER_OF_TRANSFORMS, 1);
+    status = DftiSetValue(desc_handle_dim1, DFTI_INPUT_STRIDES, stride);
+    status = DftiSetValue(desc_handle_dim1, DFTI_OUTPUT_STRIDES, stride);
     status = DftiCommitDescriptor(desc_handle_dim1);
     status = DftiComputeForward(desc_handle_dim1, B_t_B_w);
     status = DftiFreeDescriptor(&desc_handle_dim1);
@@ -250,16 +254,16 @@ void compute_fft2D_of_B(MKL_Complex8 *B_t_B_w, size_t rows, size_t columns)
         v[k].imag = sinf(theta) * (-1);
     }
 
-    cblas_ccopy(rows, B_t_B_w, 1, &B_t_B_w[(columns - 1) * rows], 1);
-    cblas_csscal(rows, -1.0f, &B_t_B_w[(columns - 1) * rows], 1);
-    cblas_caxpy(rows, a, v, 1, &B_t_B_w[(columns - 1) * rows], 1);
+    cblas_ccopy(rows, B_t_B_w, columns, &B_t_B_w[columns - 1], columns);
+    cblas_csscal(rows, -1.0f, &B_t_B_w[columns - 1], columns);
+    cblas_caxpy(rows, a, v, 1, &B_t_B_w[columns - 1], columns);
 
     for (int j = 1; j < columns - 1; j++)
     {
-        a->real = B_t_B_w[j * rows].real;
-        a->imag = B_t_B_w[j * rows].imag;
-        cblas_ccopy(rows, v, 1, &B_t_B_w[j * rows], 1);
-        cblas_cscal(rows, a, &B_t_B_w[j * rows], 1);
+        a->real = B_t_B_w[j].real;
+        a->imag = B_t_B_w[j].imag;
+        cblas_ccopy(rows, v, 1, &B_t_B_w[j], columns);
+        cblas_cscal(rows, a, &B_t_B_w[j], columns);
     }
 
     free(v);
@@ -270,11 +274,11 @@ void compute_fft2D_of_B(MKL_Complex8 *B_t_B_w, size_t rows, size_t columns)
     status = DftiCreateDescriptor(&desc_handle_dim3, DFTI_SINGLE,
                                   DFTI_COMPLEX, 1, columns);
 
-    MKL_LONG stride[2] = {0, rows};
+    stride[1] = 1;
 
     status = DftiSetValue(desc_handle_dim3, DFTI_NUMBER_OF_TRANSFORMS, rows);
-    status = DftiSetValue(desc_handle_dim3, DFTI_INPUT_DISTANCE, 1);
-    status = DftiSetValue(desc_handle_dim3, DFTI_OUTPUT_DISTANCE, 1);
+    status = DftiSetValue(desc_handle_dim3, DFTI_INPUT_DISTANCE, columns);
+    status = DftiSetValue(desc_handle_dim3, DFTI_OUTPUT_DISTANCE, columns);
     status = DftiSetValue(desc_handle_dim3, DFTI_INPUT_STRIDES, stride);
     status = DftiSetValue(desc_handle_dim3, DFTI_OUTPUT_STRIDES, stride);
     status = DftiCommitDescriptor(desc_handle_dim3);
@@ -303,8 +307,8 @@ void compute_smooth_component_S(MKL_Complex8 *B_S, size_t rows, size_t columns)
         for (int j = 0; j < columns; j++)
         {
             float denom = (2.0f * cosf(2.0f * PI * i / rows) + 2.0f * cosf(2.0f * PI * j / columns) - 4.0f);
-            B_S[i + j * rows].real /= denom;
-            B_S[i + j * rows].imag /= denom;
+            B_S[j + i * columns].real /= denom;
+            B_S[j + i * columns].imag /= denom;
         }
     }
 
