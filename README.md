@@ -2,8 +2,6 @@
 
 Este repositório, que possui fins exclusivamente educacionais, contém a implementação de um algoritmo bastante útil no processamento digital de imagens, conhecido como Periodic Plus Smooth Decomposition (PSD). Inspirado por um artigo do International Journal of Reconfigurable Computing, esta implementação aborda a remoção de artefatos de borda em transformadas de Fourier discretas 2D, comuns em imagens não periódicas tratadas como periódicas.
 
-O projeto fornece instruções para compilação e execução do algoritmo em C usando a biblioteca Intel MKL, além de perfilar o código com o Intel VTune para otimização de desempenho. Um exemplo de configuração JSON também é fornecido para auxiliar na configuração do ambiente de desenvolvimento.
-
 É importante salientar que este foi inspirado por um artigo do International Journal of Reconﬁgurable Computing, da editora Hindawi, o qual está disponível no link abaixo.
 
 [Clique aqui para acessar o artigo!](https://onlinelibrary.wiley.com/doi/10.1155/2018/1403181)
