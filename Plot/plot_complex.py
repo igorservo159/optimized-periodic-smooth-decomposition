@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import sys
 
-def read_complex_matrix(filename, rows, columns):
+def read_cvector_bin(filename, rows, columns):
     with open(filename, "rb") as file:
         data = np.fromfile(file, dtype=np.complex64)
         if data.size != rows * columns:
@@ -9,7 +10,7 @@ def read_complex_matrix(filename, rows, columns):
         matrix = data.reshape((rows, columns))
     return matrix
 
-def plot_spectrum(matrix, save_path=None):
+def plot_spectrum(matrix, filename, save_path=None):
     magnitude = np.abs(matrix)
         
     magnitude_log = np.log(magnitude + 1)
@@ -17,7 +18,7 @@ def plot_spectrum(matrix, save_path=None):
     plt.figure(figsize=(10, 6))
     plt.imshow(magnitude_log, cmap='viridis', aspect='auto')
     plt.colorbar(label='Magnitude (log scale)')
-    plt.title('Magnitude Spectrum')
+    plt.title(f'Magnitude Spectrum\n{filename}')
     plt.xlabel('X')
     plt.ylabel('Y')
     if save_path:
@@ -26,6 +27,18 @@ def plot_spectrum(matrix, save_path=None):
         plt.show()
 
 if __name__ == "__main__":
-    rows, columns = 1201, 401
-    spectrum = read_complex_matrix("../bin/tests/smooth.bin", rows, columns)
-    plot_spectrum(spectrum.T, "../img/tests/smooth.png")
+    if len(sys.argv) != 4:
+        print("Uso: python3 plot_complex.py <nome_do_binário> <rows> <columns>")
+        sys.exit(1)
+    
+    filename = sys.argv[1]
+    rows = int(sys.argv[2])
+    columns = int(sys.argv[3])
+    filepath = f"../bin/example/{filename}.bin"
+    
+    try:
+        spectrum = read_cvector_bin(filepath, rows, columns)
+        save_path = f"../img/example/{filename}.png"
+        plot_spectrum(spectrum.T, filename, save_path)
+    except Exception as e:
+        print(f"Erro: {e}")

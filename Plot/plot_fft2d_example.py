@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from scipy.fft import fft2, fftshift
 
 # Substitua 'path_to_binary_file' pelo caminho real do arquivo binário
-path_to_binary_file = '../bin/tests/toy2024_cp0_5m.bin'
+path_to_binary_file = '../bin/example/data.bin'
 
 # Defina as dimensões da imagem (substitua pelos valores reais)
 image_height = 1201  # Altura da imagem
@@ -23,11 +23,11 @@ plt.show()
 # Cálculo da FFT2D
 fft_image = fft2(image_data)
 fft_image_shifted = fftshift(fft_image)
-magnitude_spectrum = np.log(np.abs(fft_image) + 1)  # Adiciona 1 para evitar log(0)
+magnitude_spectrum = np.log(np.abs(fft_image_shifted) + 1)  # Adiciona 1 para evitar log(0)
 
 # Plot do espectro da FFT2D
 plt.figure(figsize=(10, 6))
 plt.imshow(magnitude_spectrum, cmap='viridis', aspect='auto')
 plt.title('Espectro da FFT2D')
 plt.colorbar()
-plt.savefig("../img/tests/example_spectrum.png")
+plt.savefig("../img/example/example_spectrum.png")
