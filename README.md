@@ -25,21 +25,21 @@ Para executar o algoritmo OPSD em C, utilize o executável bin/out e forneça os
 Aqui estão as referências de strings para os argumentos:
 
 - `Routine`:
-  - `ccr`: rotina de cálculo concluída.
-  - `css`: espectros deslocados computados.
-  - `cts`: espectros tradicionais computados.
+  - `ccr`: compute complete routine.
+  - `css`: compute shifted spectrums.
+  - `cts`: compute tradicional spectrums.
 
 - `Precision`:
-  - `single`: precisão de ponto flutuante de precisão simples.
-  - `double`: precisão de ponto flutuante dupla.
+  - `single`
+  - `double`
 
 - `Save_vector`:
-  - `yes`: salvar vetor.
-  - `no`: não salvar vetor.
+  - `yes`
+  - `no`
 
 - `Input`:
-  - `rb`: ler arquivo binário.
-  - `fm`: preencher matriz.
+  - `rb`: read binary.
+  - `fm`: fill matrix.
 
 ## Perfilar Código com VTune
 
