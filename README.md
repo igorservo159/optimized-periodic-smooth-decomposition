@@ -20,26 +20,26 @@ Recomendo utilizar o compilador icx, da própria intel, que pode ser adquirido i
 
 ## Execução do Algoritmo OPSD em C
 
-Para utilizar o executável bin/out, você pode utilizar make run ARGS="<rows> <columns> <routine> <precision> <save_vector> <input> <seed>".
+Para executar o algoritmo OPSD em C, utilize o executável bin/out e forneça os seguintes argumentos: `<rows> <columns> <routine> <precision> <save_vector> <input> <seed>`.
 
-Abaixo estão referências de string no args. 
+Aqui estão as referências de strings para os argumentos:
 
-Routine:
-compute completed routine - ccr
-compute shifted spectrums - css
-compute tradicional spectrums - cts
+- `Routine`:
+  - `ccr`: rotina de cálculo concluída.
+  - `css`: espectros deslocados computados.
+  - `cts`: espectros tradicionais computados.
 
-Precision:
-single
-double
+- `Precision`:
+  - `single`: precisão de ponto flutuante de precisão simples.
+  - `double`: precisão de ponto flutuante dupla.
 
-Save_vector:
-yes
-no
+- `Save_vector`:
+  - `yes`: salvar vetor.
+  - `no`: não salvar vetor.
 
-Input:
-read binary - rb
-fill matrix - fm
+- `Input`:
+  - `rb`: ler arquivo binário.
+  - `fm`: preencher matriz.
 
 ## Perfilar Código com VTune
 
