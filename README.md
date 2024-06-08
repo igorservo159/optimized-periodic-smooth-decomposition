@@ -6,17 +6,40 @@ Este repositório, que possui fins exclusivamente educacionais, contém a implem
 
 [Clique aqui para acessar o artigo!](https://onlinelibrary.wiley.com/doi/10.1155/2018/1403181)
 
-## Compilação e Execução do Algoritmo OPSD em C
+## Compilação do Algoritmo OPSD em C
 
 Certifique-se de ter a biblioteca Intel MKL instalada!
 
-Para compilar o código, você pode utilizar o arquivo makefile, que já está bem configurado para compilar o código, mas caso necessite, as diretivas de compilação são as seguintes:
+Para compilar o código, recomendo que você utilize o arquivo makefile, que já está bem configurado para compilar o código, mas caso necessite, as diretivas de compilação são as seguintes:
 
 ```bash
 icx -o example example.c -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm -ldl -qopenmp
 ```
 
 Recomendo utilizar o compilador icx, da própria intel, que pode ser adquirido instalando o oneapi base toolkit, o qual já vem com várias ferramentas usadas nesse projeto, incluindo o perfilador e a MKL Intel.
+
+## Execução do Algoritmo OPSD em C
+
+Para utilizar o executável bin/out, você pode utilizar make run ARGS="<rows> <columns> <routine> <precision> <save_vector> <input> <seed>".
+
+Abaixo estão referências de string no args. 
+
+Routine:
+compute completed routine - ccr
+compute shifted spectrums - css
+compute tradicional spectrums - cts
+
+Precision:
+single
+double
+
+Save_vector:
+yes
+no
+
+Input:
+read binary - rb
+fill matrix - fm
 
 ## Perfilar Código com VTune
 
