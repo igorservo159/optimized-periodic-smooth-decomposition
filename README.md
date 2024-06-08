@@ -29,6 +29,10 @@ Aqui estão as referências de strings para os argumentos:
   - `css`: compute shifted spectrums.
   - `cts`: compute tradicional spectrums.
 
+- `Input`:
+  - `rb`: read binary.
+  - `fm`: fill matrix.
+  
 - `Precision`:
   - `single`
   - `double`
@@ -37,9 +41,6 @@ Aqui estão as referências de strings para os argumentos:
   - `yes`
   - `no`
 
-- `Input`:
-  - `rb`: read binary.
-  - `fm`: fill matrix.
 
 ## Perfilar Código com VTune
 
