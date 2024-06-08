@@ -61,31 +61,6 @@ Se necessário, utilize o seguinte comando para habilitar o VTune:
 source /opt/intel/oneapi/vtune/latest/env/vars.sh
 ```
 
-## Configuração JSON VSCODE
-
-Abaixo está um exemplo de configuração JSON que pode ser usado no VSCode, caso você o utilize.
-
-```json
-{
-    "configurations": [
-        {
-            "name": "Linux",
-            "includePath": [
-                "${default}",
-                "${workspaceFolder}/**",
-                "/opt/intel/oneapi/compiler/latest/include"
-            ],
-            "defines": [],
-            "compilerPath": "/opt/intel/oneapi/compiler/latest/bin/icx",
-            "cStandard": "c17",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "linux-clang-x64"
-        }
-    ],
-    "version": 4
-}
-```
-
 ## Plotando os espectros e as imagens
 
 Os binários das imagens e espectros de frequência podem sem encontrados no diretório bin/example/, e suas respectivas imagens no diretório img/example/.
