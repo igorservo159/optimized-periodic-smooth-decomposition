@@ -23,7 +23,7 @@ def plot_image(matrix, filename, save_path=None):
         plt.show()
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 5:
         print("Uso: python3 plot_float.py <dirname> <filename> <rows> <columns>")
         sys.exit(1)
     
