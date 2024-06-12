@@ -3,7 +3,7 @@
 int check_args(const char *BIN, const char *ROUTINE, const char *PRECISION, const char *SAVE_VECTORS, const char *INPUT)
 {
     if(strcmp(ROUTINE, "ccr") && strcmp(ROUTINE, "css") && strcmp(ROUTINE, "cts")){
-        printf("Use: %s <rows> <columns> <routine> <precision> <save_vectors> <input> <seed>\n", BIN);
+        printf("Use: %s <rows> <columns> <routine> <precision> <save_vectors> <input> <directory> <seed>\n", BIN);
         printf("Options to <routine>: 'ccr', 'cts', 'css'\n");
         return -2;
 
@@ -13,19 +13,19 @@ int check_args(const char *BIN, const char *ROUTINE, const char *PRECISION, cons
     }
 
     if(strcmp(PRECISION, "single") && strcmp(PRECISION, "double")){
-        printf("Use: %s <rows> <columns> <routine> <precision> <save_vectors> <input> <seed>\n", BIN);
+        printf("Use: %s <rows> <columns> <routine> <precision> <save_vectors> <input> <directory> <seed>\n", BIN);
         printf("Options to <precision>: 'single', 'double'\n");
         return -3;
     }
 
     if(strcmp(SAVE_VECTORS, "yes") && strcmp(SAVE_VECTORS, "no")){
-        printf("Use: %s <rows> <columns> <routine> <precision> <save_vectors> <input> <seed>\n", BIN);
+        printf("Use: %s <rows> <columns> <routine> <precision> <save_vectors> <input> <directory> <seed>\n", BIN);
         printf("Options to <save_vectors>: 'yes', 'no'\n");
         return -4;
     }
 
     if(strcmp(INPUT, "rb") && strcmp(INPUT, "fm")){
-        printf("Use: %s <rows> <columns> <routine> <precision> <save_vectors> <input> <seed>\n", BIN);
+        printf("Use: %s <rows> <columns> <routine> <precision> <save_vectors> <input> <directory> <seed>\n", BIN);
         printf("Options to <input>: 'rb', 'fm'\n");
         return -5;
 
@@ -34,6 +34,16 @@ int check_args(const char *BIN, const char *ROUTINE, const char *PRECISION, cons
     }
 
     return 0;
+}
+
+void ensure_directory_exists(const char *path) {
+    struct stat st = {0};
+    if (stat(path, &st) == -1) {
+        if (mkdir(path, 0700) != 0) {
+            perror("mkdir");
+            exit(EXIT_FAILURE);
+        }
+    }
 }
 
 //CVECTOR FUNCTIONS

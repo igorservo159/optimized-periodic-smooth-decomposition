@@ -15,5 +15,7 @@
 #include "time.h"
 #include "mkl.h"
 #include "omp.h"
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #endif

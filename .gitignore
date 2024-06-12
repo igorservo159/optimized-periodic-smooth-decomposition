@@ -2,3 +2,11 @@
 Routine_OPSD/bin/out
 Routine_OPSD/obj/fourier.o
 Routine_OPSD/obj/utils.o
+bin/*
+!bin/example/
+bin/example/*
+!bin/example/data.bin
+img/*
+!img/example/
+img/example/*
+!img/example/data.png

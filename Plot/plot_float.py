@@ -24,17 +24,18 @@ def plot_image(matrix, filename, save_path=None):
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print("Uso: python3 plot_float.py <nome_do_binario> <rows> <columns>")
+        print("Uso: python3 plot_float.py <dirname> <filename> <rows> <columns>")
         sys.exit(1)
     
-    filename = sys.argv[1]
-    rows = int(sys.argv[2])
-    columns = int(sys.argv[3])
-    filepath = f"../bin/example/{filename}.bin"
+    dirname = sys.argv[1]
+    filename = sys.argv[2]
+    rows = int(sys.argv[3])
+    columns = int(sys.argv[4])
+    filepath = f"../bin/{dirname}/{filename}.bin"
     
     try:
         spectrum = read_float32(filepath, rows, columns)
-        save_path = f"../img/example/{filename}.png"
+        save_path = f"../img/{dirname}/{filename}.png"
         plot_image(spectrum, filename, save_path)
     except Exception as e:
         print(f"Erro: {e}")
