@@ -9,8 +9,9 @@ Este repositório, que possui fins exclusivamente educacionais, contém a implem
 ## Compilação do Algoritmo OPSD em C
 
 Certifique-se de ter a biblioteca Intel MKL instalada!
+[Clique aqui para acessar a página de download da biblioteca](https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl-download.html).
 
-Para compilar o código, recomendo que você utilize o arquivo makefile, que já está bem configurado para compilar o código, mas caso necessite, as diretivas de compilação são as seguintes:
+Para compilar o código, recomendo que você utilize o arquivo makefile (use o comando make em /Routine), que já está bem configurado para compilar o código, mas caso necessite, as diretivas de compilação são as seguintes:
 
 ```bash
 icx -o example example.c -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm -ldl -qopenmp
