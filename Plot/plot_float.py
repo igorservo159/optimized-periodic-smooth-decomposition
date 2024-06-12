@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 import sys
 
 def read_float32(filename, rows, columns):
@@ -16,7 +17,7 @@ def plot_image(matrix, filename, save_path=None):
     plt.colorbar(label='Amplitude')
     plt.title(f'Imagem de {filename}.bin')
     plt.xlabel('Distância X (m)')
-    plt.ylabel('Profundidade Z (m')
+    plt.ylabel('Profundidade Z (m)')
     if save_path:
         plt.savefig(save_path)
     else:
@@ -34,8 +35,12 @@ if __name__ == "__main__":
     filepath = f"../bin/{dirname}/{filename}.bin"
     
     try:
+        # Create the directory for the output image if it doesn't exist
+        output_dir = f"../img/{dirname}"
+        os.makedirs(output_dir, exist_ok=True)
+        
         spectrum = read_float32(filepath, rows, columns)
-        save_path = f"../img/{dirname}/{filename}.png"
-        plot_image(spectrum, filename, save_path)
+        save_path = f"{output_dir}/{filename}.png"
+        plot_image(spectrum.T, filename, save_path)
     except Exception as e:
         print(f"Erro: {e}")

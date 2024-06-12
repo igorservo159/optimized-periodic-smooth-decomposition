@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 import sys
 
 def read_cvector_bin(filename, rows, columns):
@@ -38,8 +39,12 @@ if __name__ == "__main__":
     filepath = f"../bin/{dirname}/{filename}.bin"
     
     try:
+        # Create the directory for the output image if it doesn't exist
+        output_dir = f"../img/{dirname}"
+        os.makedirs(output_dir, exist_ok=True)
+        
         spectrum = read_cvector_bin(filepath, rows, columns)
-        save_path = f"../img/{dirname}/{filename}.png"
+        save_path = f"{output_dir}/{filename}.png"
         plot_spectrum(spectrum.T, filename, save_path)
     except Exception as e:
         print(f"Erro: {e}")
