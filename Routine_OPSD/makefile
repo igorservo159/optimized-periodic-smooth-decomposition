@@ -1,6 +1,6 @@
 # Definições
-CC = icx
-CFLAGS = -qopenmp -I./include
+CC = gcc
+CFLAGS = -fopenmp -I./include
 LDFLAGS = -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm -ldl
 
 # Diretórios

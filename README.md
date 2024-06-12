@@ -19,10 +19,10 @@ make
 Mas caso necessite, as diretivas de compilação são as seguintes:
 
 ```bash
-icx -o example example.c -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm -ldl -qopenmp
+gcc -o example example.c -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm -ldl -qopenmp
 ```
 
-Recomendo utilizar o compilador icx, da própria intel, que pode ser adquirido instalando o oneapi base toolkit, o qual já vem com várias ferramentas usadas nesse projeto, incluindo o perfilador e a MKL Intel.
+Recomendo utilizar o compilador icx, da própria intel, que pode ser adquirido instalando o oneapi base toolkit, o qual já vem com várias ferramentas usadas nesse projeto, incluindo o perfilador e a MKL Intel. Caso queira utilizá-lo lembre de trocar o compilador de gcc para icx no makefile.
 
 ## Execução do Algoritmo OPSD em C
 
