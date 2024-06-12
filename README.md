@@ -26,10 +26,14 @@ Recomendo utilizar o compilador icx, da própria intel, que pode ser adquirido i
 
 ## Execução do Algoritmo OPSD em C
 
+Quando for utilizar o algoritmo, obtenha o .bin da imagem que você quer filtrar, crie um diretório em Paper_OPSD/bin/ e coloque o binário dentro com o nome data.bin. Depois disso, é só executar o algoritmo.
+
+Os arquivos .bin e .png são sempre salvos com os mesmos nomes ("data", "data_filtered", "spectrum", "spectrum_shifted", "smooth", "smooth_shifted", "periodic", "periodic_shifted") nos diretórios Paper_OPSD/bin/{dirname}/ e Paper_OPSD/img/{dirname}/, respectivamente. 
+
 Para executar o algoritmo OPSD em C, é recomendado que você utilize o comando make run em Routine_OPSD forneça os seguintes argumentos: 
 
 ```bash
-make run ARGS="<rows> <columns> <routine> <precision> <save_vector> <input> <directory> <seed>"
+make run ARGS="<rows> <columns> <routine> <precision> <save_vector> <input> <dirname> <seed>"
 ```
 
 Aqui estão as referências de strings para os argumentos:
@@ -51,7 +55,7 @@ Aqui estão as referências de strings para os argumentos:
   - `yes`
   - `no`
 
-- `Directory`:
+- `Dirname`:
   - `example`
   - `other dirname in bin`
 
@@ -78,12 +82,14 @@ source /opt/intel/oneapi/vtune/latest/env/vars.sh
 
 ## Plotando os espectros e as imagens
 
-Os binários das imagens e espectros de frequência podem sem encontrados no diretório bin/example/, e suas respectivas imagens no diretório img/example/.
+Os binários das imagens e espectros de frequência podem sem encontrados no diretório Paper_OPSD/bin/{dirname}/, e suas respectivas imagens no diretório Paper_OPSD/img/{dirname}/.
 
 O código C contém, em utils, funções para ler e salvar binários.
 
-Há também, no diretório Plot/, um código em python (plot_float32.py) para plotar imagens e um para plotar os espectros de frequência (plot_complex.py). Se for utilizá-los, passe como parâmetro o nome do diretório do e o nome do binário (que serão também utilizados como o diretório e nome da imagem/espectro gerado), o número de rows e o número de columns como no exemplo abaixo.
+Há também, no diretório Paper_OPSD/Plot/, um código em python (plot_float32.py) para plotar imagens e um para plotar os espectros de frequência (plot_complex.py). Se for utilizá-los, passe como parâmetro o nome do diretório do e o nome do binário (que serão também utilizados como o diretório e nome da imagem/espectro gerado), o número de rows e o número de columns como no exemplo abaixo.
 
 ```bash
 python3 plot_float.py example data 1201 401
 ```
+
+A imagem será salva em Paper_OPSD/img/{dirname}
