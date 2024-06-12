@@ -21,7 +21,11 @@ Recomendo utilizar o compilador icx, da própria intel, que pode ser adquirido i
 
 ## Execução do Algoritmo OPSD em C
 
-Para executar o algoritmo OPSD em C, utilize o executável bin/out e forneça os seguintes argumentos: `<rows> <columns> <routine> <precision> <save_vector> <input> <seed>`.
+Para executar o algoritmo OPSD em C, é recomendado que você utilize o comando make run em Routine_OPSD forneça os seguintes argumentos: 
+
+```bash
+make run ARGS="<rows> <columns> <routine> <precision> <save_vector> <input> <directory> <seed>"
+```
 
 Aqui estão as referências de strings para os argumentos:
 
@@ -41,6 +45,10 @@ Aqui estão as referências de strings para os argumentos:
 - `Save_vector`:
   - `yes`
   - `no`
+
+- `Directory`:
+  - `example`
+  - `other dirname in bin`
 
 
 ## Perfilar Código com VTune
@@ -69,8 +77,8 @@ Os binários das imagens e espectros de frequência podem sem encontrados no dir
 
 O código C contém, em utils, funções para ler e salvar binários.
 
-Há também, no diretório Plot/, um código em python (plot_float32.py) para plotar imagens e um para plotar os espectros de frequência (plot_complex.py). Se for utilizá-los, passe como parâmetro o nome do binário (que será também utilizado como o nome da imagem/espectro gerado), o número de rows e o número de columns como no exemplo abaixo.
+Há também, no diretório Plot/, um código em python (plot_float32.py) para plotar imagens e um para plotar os espectros de frequência (plot_complex.py). Se for utilizá-los, passe como parâmetro o nome do diretório do e o nome do binário (que serão também utilizados como o diretório e nome da imagem/espectro gerado), o número de rows e o número de columns como no exemplo abaixo.
 
 ```bash
-python3 plot_complex.py periodic 1201 401
+python3 plot_float.py example data 1201 401
 ```
