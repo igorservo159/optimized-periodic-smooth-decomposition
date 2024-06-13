@@ -1,7 +1,7 @@
 # Variáveis
 CC = icx
 CFLAGS = -qopenmp
-LDFLAGS = -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm -ldl
+LDFLAGS = -lmkl_rt -lm -ldl
 
 # Nome do executável
 TARGET = main
