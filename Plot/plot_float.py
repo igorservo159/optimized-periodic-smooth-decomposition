@@ -13,7 +13,7 @@ def read_float32(filename, rows, columns):
 
 def plot_image(matrix, filename, save_path=None, cmap='viridis'):    
     plt.figure(figsize=(10, 6))
-    plt.imshow(matrix.T, cmap=cmap, aspect='auto')
+    plt.imshow(matrix, cmap=cmap, aspect='auto')
     plt.colorbar(label='Amplitude')
     plt.title(f'Imagem de {filename}.bin')
     plt.xlabel('Distância X (m)')
