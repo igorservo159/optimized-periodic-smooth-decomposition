@@ -1,7 +1,7 @@
 # Definições
 CC = gcc
 CFLAGS = -fopenmp -I./include
-LDFLAGS = -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm -ldl
+LDFLAGS = -lmkl_rt -lm -ldl
 
 # Diretórios
 BINDIR = bin
