@@ -11,9 +11,9 @@ def read_float32(filename, rows, columns):
         matrix = data.reshape((rows, columns))
     return matrix
 
-def plot_image(matrix, filename, save_path=None):    
+def plot_image(matrix, filename, save_path=None, cmap='viridis'):    
     plt.figure(figsize=(10, 6))
-    plt.imshow(matrix.T, cmap='viridis', aspect='auto')
+    plt.imshow(matrix.T, cmap=cmap, aspect='auto')
     plt.colorbar(label='Amplitude')
     plt.title(f'Imagem de {filename}.bin')
     plt.xlabel('Distância X (m)')
@@ -24,15 +24,20 @@ def plot_image(matrix, filename, save_path=None):
         plt.show()
 
 if __name__ == "__main__":
-    if len(sys.argv) != 5:
-        print("Uso: python3 plot_float.py <dirname> <filename> <rows> <columns>")
+    if len(sys.argv) != 6:
+        print("Uso: python3 plot_float.py <dirname> <filename> <rows> <columns> <cmap>")
         sys.exit(1)
     
     dirname = sys.argv[1]
     filename = sys.argv[2]
     rows = int(sys.argv[3])
     columns = int(sys.argv[4])
+    cmap = sys.argv[5]
     filepath = f"../bin/{dirname}/{filename}.bin"
+    
+    if cmap not in plt.colormaps():
+        print(f"Erro: '{cmap}' não é um colormap válido. Use um dos seguintes: {plt.colormaps()}")
+        sys.exit(1)
     
     try:
         # Create the directory for the output image if it doesn't exist
@@ -41,6 +46,6 @@ if __name__ == "__main__":
         
         spectrum = read_float32(filepath, rows, columns)
         save_path = f"{output_dir}/{filename}.png"
-        plot_image(spectrum.T, filename, save_path)
+        plot_image(spectrum.T, filename, save_path, cmap)
     except Exception as e:
         print(f"Erro: {e}")
