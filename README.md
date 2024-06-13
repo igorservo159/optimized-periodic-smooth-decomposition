@@ -11,6 +11,8 @@ Este repositório, que possui fins exclusivamente educacionais, contém a implem
 Certifique-se de ter a biblioteca Intel MKL instalada!
 [Clique aqui para acessar a página de download da biblioteca](https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl-download.html).
 
+Após a instalação, lembre de utilizar as variáveis de ambiente da MKL que possuem caminho default /opt/intel/oneapi/setvars.sh.
+
 Para compilar o código, recomendo que você utilize o arquivo makefile em Routine_OPSD, que já está bem configurado para compilar o código.
 ```bash
 make
@@ -86,10 +88,13 @@ Os binários das imagens e espectros de frequência podem sem encontrados no dir
 
 O código C contém, em utils, funções para ler e salvar binários.
 
-Há também, no diretório Paper_OPSD/Plot/, um código em python (plot_float32.py) para plotar imagens e um para plotar os espectros de frequência (plot_complex.py). Se for utilizá-los, passe como parâmetro o nome do diretório do e o nome do binário (que serão também utilizados como o diretório e nome da imagem/espectro gerado), o número de rows e o número de columns como no exemplo abaixo.
+Há também, no diretório Paper_OPSD/Plot/, um código em python (plot_float32.py) para plotar imagens e um para plotar os espectros de frequência (plot_complex.py). Se for utilizá-los, passe como parâmetro o nome do diretório do e o nome do binário (que serão também utilizados como o diretório e nome da imagem/espectro gerado), o número de rows, o número de columns e o color map como nos exemplos abaixo.
 
 ```bash
-python3 plot_float.py example data 1201 401
+python3 plot_float.py example data 1201 401 grey
+
+python3 plot_float.py example data 1201 401 viridis
+
 ```
 
 A imagem será salva em Paper_OPSD/img/{dirname}
