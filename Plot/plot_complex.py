@@ -28,8 +28,8 @@ def plot_spectrum(matrix, filename, save_path=None, cmap='viridis'):
         plt.show()
 
 if __name__ == "__main__":
-    if len(sys.argv) != 6:
-        print("Uso: python3 plot_complex.py <dirname> <filename> <rows> <columns> <cmap>")
+    if len(sys.argv) != 7:
+        print("Uso: python3 plot_float.py <dirname> <filename> <rows> <columns> <cmap> <transpose>")
         sys.exit(1)
     
     dirname = sys.argv[1]
@@ -37,6 +37,7 @@ if __name__ == "__main__":
     rows = int(sys.argv[3])
     columns = int(sys.argv[4])
     cmap = sys.argv[5]
+    transpose = sys.argv[6].lower()
     filepath = f"../bin/{dirname}/{filename}.bin"
     
     if cmap not in plt.colormaps():
@@ -49,7 +50,11 @@ if __name__ == "__main__":
         os.makedirs(output_dir, exist_ok=True)
         
         spectrum = read_cvector_bin(filepath, rows, columns)
+
+        if transpose == 'yes':
+            spectrum = spectrum.T
+            
         save_path = f"{output_dir}/{filename}.png"
-        plot_spectrum(spectrum.T, filename, save_path, cmap)
+        plot_spectrum(spectrum, filename, save_path, cmap)
     except Exception as e:
         print(f"Erro: {e}")
