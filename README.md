@@ -88,12 +88,15 @@ Os binários das imagens e espectros de frequência podem sem encontrados no dir
 
 O código C contém, em utils, funções para ler e salvar binários.
 
-Há também, no diretório Paper_OPSD/Plot/, um código em python (plot_float32.py) para plotar imagens e um para plotar os espectros de frequência (plot_complex.py). Se for utilizá-los, passe como parâmetro o nome do diretório do e o nome do binário (que serão também utilizados como o diretório e nome da imagem/espectro gerado), o número de rows, o número de columns, o color map e se deseja transpor a matriz como nos exemplos abaixo.
+Há também, no diretório Paper_OPSD/Plot/, código para plotar as imagens e os espectros. Se for utilizá-los, passe como parâmetro o nome do diretório do e o nome do binário (apenas em spectrum), o número de rows, o número de columns, o color map e se deseja transpor a matriz como nos exemplos abaixo.
 
 ```bash
-python3 plot_float.py example data 1201 401 grey yes
+python3 plot_data.py example 1201 401 grey yes
 
-python3 plot_float.py example data 1201 401 viridis no
+python3 plot_data_filtered.py example 1201 401 viridis no
+
+python3 plot_data_spectrum.py example spectrum_shifted 1201 401 viridis no
+
 
 ```
 
