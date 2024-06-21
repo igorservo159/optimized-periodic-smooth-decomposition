@@ -24,16 +24,16 @@ def plot_image(matrix, filename, save_path=None, cmap='viridis'):
         plt.show()
 
 if __name__ == "__main__":
-    if len(sys.argv) != 7:
-        print("Uso: python3 plot_float.py <dirname> <filename> <rows> <columns> <cmap> <transpose>")
+    if len(sys.argv) != 6:
+        print("Uso: python3 plot_data.py <dirname> <rows> <columns> <cmap> <transpose>")
         sys.exit(1)
     
     dirname = sys.argv[1]
-    filename = sys.argv[2]
-    rows = int(sys.argv[3])
-    columns = int(sys.argv[4])
-    cmap = sys.argv[5]
-    transpose = sys.argv[6].lower()
+    filename = "data"
+    rows = int(sys.argv[2])
+    columns = int(sys.argv[3])
+    cmap = sys.argv[4]
+    transpose = sys.argv[5].lower()
     filepath = f"../bin/{dirname}/{filename}.bin"
     
     if cmap not in plt.colormaps():

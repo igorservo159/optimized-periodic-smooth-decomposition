@@ -29,7 +29,7 @@ def plot_spectrum(matrix, filename, save_path=None, cmap='viridis'):
 
 if __name__ == "__main__":
     if len(sys.argv) != 7:
-        print("Uso: python3 plot_float.py <dirname> <filename> <rows> <columns> <cmap> <transpose>")
+        print("Uso: python3 plot_spectrum.py <dirname> <filename> <rows> <columns> <cmap> <transpose>")
         sys.exit(1)
     
     dirname = sys.argv[1]
