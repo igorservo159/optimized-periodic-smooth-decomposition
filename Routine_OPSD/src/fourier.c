@@ -156,7 +156,8 @@ void compute_cfft2d_of_border_B(MKL_Complex8 *B_t_B_w, size_t rows, size_t colum
     status = DftiFreeDescriptor(&desc_handle_dim1);
 
     // Calcular cada elemento de v usando a fórmula W^k = exp(-i * 2 * PI * k / M)
-    MKL_Complex8 *v = (MKL_Complex8 *)malloc(rows * sizeof(MKL_Complex8));
+    MKL_Complex8 *v = NULL;
+    init_cvector(&v, rows);
     if (v == NULL)
     {
         printf("Erro ao alocar memória\n");
@@ -239,8 +240,11 @@ void compute_csmooth_component_S_2(MKL_Complex8 *B_S, size_t rows, size_t column
 
     MKL_Complex8 aux = {B_S[0].real, B_S[0].imag};
 
-    float *v1 = (float *)malloc(rows * sizeof(float));
-    float *v2 = (float *)malloc(columns * sizeof(float));
+    float *v1 = NULL;
+    float *v2 = NULL;
+
+    init_fvector(&v1, rows);
+    init_fvector(&v2, columns);
 
     for (int i = 0; i < rows; i++)
     {
@@ -252,14 +256,14 @@ void compute_csmooth_component_S_2(MKL_Complex8 *B_S, size_t rows, size_t column
         v2[i] = (2.0f * PI * (i)) / columns;
     }
 
-    float *cos_1 = (float *)malloc(rows * sizeof(float));
-    float *cos_2 = (float *)malloc(columns * sizeof(float));
-    mkl_set_num_threads(8);
+    float *cos_1 = NULL;
+    init_fvector(&cos_1, rows);
+    float *cos_2 = NULL;
+    init_fvector(&cos_2, columns);
     vsCos(rows, v1, cos_1);
     vsCos(columns, v2, cos_2);
     cblas_sscal(rows, 2.0f, cos_1, 1);
     cblas_sscal(columns, 2.0f, cos_2, 1);
-    mkl_set_num_threads(1);
 
     for (int i = 0; i < rows; i++)
     {
@@ -310,6 +314,18 @@ void compute_cfftshift(MKL_Complex8 *vector, size_t rows, size_t columns) {
             vector[index3] = vector[index4];
             vector[index4] = temp;
         }
+    }
+}
+
+void normalize_cvector(MKL_Complex8 *cvector, size_t size){
+    float *magnitudes = NULL;
+    init_fvector(&magnitudes, size);
+    
+    vcAbs(size, cvector, magnitudes);
+
+    for (int i = 0; i < size; i++) {
+        cvector[i].real = cvector[i].real / magnitudes[i];
+        cvector[i].imag = cvector[i].imag / magnitudes[i];
     }
 }
 
@@ -469,7 +485,8 @@ void compute_zfft2d_of_border_B(MKL_Complex16 *B_t_B_w, size_t rows, size_t colu
     status = DftiFreeDescriptor(&desc_handle_dim1);
 
     // Calcular cada elemento de v usando a fórmula W^k = exp(-i * 2 * PI * k / M)
-    MKL_Complex16 *v = (MKL_Complex16 *)malloc(rows * sizeof(MKL_Complex16));
+    MKL_Complex16 *v = NULL;
+    init_zvector(&v, rows); 
     if (v == NULL)
     {
         printf("Erro ao alocar memória\n");
@@ -552,8 +569,11 @@ void compute_zsmooth_component_S_2(MKL_Complex16 *B_S, size_t rows, size_t colum
 
     MKL_Complex16 aux = {B_S[0].real, B_S[0].imag};
 
-    double *v1 = (double *)malloc(rows * sizeof(double));
-    double *v2 = (double *)malloc(columns * sizeof(double));
+    double *v1 = NULL;
+    double *v2 = NULL;
+    
+    init_dvector(&v1, rows); 
+    init_dvector(&v2, columns); 
 
     for (int i = 0; i < rows; i++)
     {
@@ -565,8 +585,10 @@ void compute_zsmooth_component_S_2(MKL_Complex16 *B_S, size_t rows, size_t colum
         v2[i] = (2.0 * PI * (i)) / columns;
     }
 
-    double *cos_1 = (double *)malloc(rows * sizeof(double));
-    double *cos_2 = (double *)malloc(columns * sizeof(double));
+    double *cos_1 = NULL;
+    double *cos_2 = NULL;
+    init_dvector(&cos_1, rows); 
+    init_dvector(&cos_2, columns);
     vdCos(rows, v1, cos_1);
     vdCos(columns, v2, cos_2);
     cblas_dscal(rows, 2.0, cos_1, 1);
@@ -620,5 +642,17 @@ void compute_zfftshift(MKL_Complex16 *vector, size_t rows, size_t columns) {
             vector[index3] = vector[index4];
             vector[index4] = temp;
         }
+    }
+}
+
+void normalize_zvector(MKL_Complex16 *zvector, size_t size){
+    double *magnitudes = NULL;
+    init_dvector(&magnitudes, size);
+    
+    vzAbs(size, zvector, magnitudes);
+
+    for (int i = 0; i < size; i++) {
+        zvector[i].real = zvector[i].real / magnitudes[i];
+        zvector[i].imag = zvector[i].imag / magnitudes[i];
     }
 }

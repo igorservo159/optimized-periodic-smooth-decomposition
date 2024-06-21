@@ -74,15 +74,12 @@ int main(int argc, char const *argv[])
             }
 
             compute_cifft2d(I_t, rows, columns);
+            //normalize_cvector(I_t, size);
 
             if (!strcmp(SAVE_VECTORS, "yes"))
             {
-                float *aux = NULL;
-                init_fvector(&aux, size);
-                copy_cvector_to_real_fvector(I_t, aux, size);
                 snprintf(filepath, sizeof(filepath), "../bin/%s/data_filtered.bin", DIR);
-                save_fvector_on_bin(filepath, aux, size);
-                free_fvector(aux);
+                save_cvector_on_bin(filepath, I_t, size);
             }
 
             free_cvector(B_t);
@@ -137,15 +134,12 @@ int main(int argc, char const *argv[])
             }
 
             compute_zifft2d(I_t, rows, columns);
+            //normalize_zvector(I_t, size);
 
             if (!strcmp(SAVE_VECTORS, "yes"))
             {
-                double *aux = NULL;
-                init_dvector(&aux, size);
-                copy_zvector_to_real_dvector(I_t, aux, size);
                 snprintf(filepath, sizeof(filepath), "../bin/%s/data_filtered.bin", DIR);
-                save_dvector_on_bin(filepath, aux, size);
-                free_dvector(aux);
+                save_zvector_on_bin(filepath, I_t, size);
             }
 
             free_zvector(B_t);
