@@ -29,7 +29,7 @@ void compute_cifft2d(MKL_Complex8 *I_t_I_w, size_t rows, size_t columns){
         return;
     }
 
-    double start = omp_get_wtime();
+    float backward_scale = 1.0f / (rows * columns);
 
     DFTI_DESCRIPTOR_HANDLE desc_handle_dim1 = NULL;
     MKL_LONG status;
@@ -37,7 +37,7 @@ void compute_cifft2d(MKL_Complex8 *I_t_I_w, size_t rows, size_t columns){
 
     status = DftiCreateDescriptor(&desc_handle_dim1, DFTI_SINGLE,
                                   DFTI_COMPLEX, 2, dim_sizes);
-    
+    status = DftiSetValue(desc_handle_dim1, DFTI_BACKWARD_SCALE, backward_scale);
     status = DftiCommitDescriptor(desc_handle_dim1);
     status = DftiComputeBackward(desc_handle_dim1, I_t_I_w);
 
@@ -358,7 +358,7 @@ void compute_zifft2d(MKL_Complex16 *I_t_I_w, size_t rows, size_t columns){
         return;
     }
 
-    double start = omp_get_wtime();
+    float backward_scale = 1.0f / (rows * columns);
 
     DFTI_DESCRIPTOR_HANDLE desc_handle_dim1 = NULL;
     MKL_LONG status;
@@ -366,7 +366,7 @@ void compute_zifft2d(MKL_Complex16 *I_t_I_w, size_t rows, size_t columns){
 
     status = DftiCreateDescriptor(&desc_handle_dim1, DFTI_DOUBLE,
                                   DFTI_COMPLEX, 2, dim_sizes);
-    
+    status = DftiSetValue(desc_handle_dim1, DFTI_BACKWARD_SCALE, backward_scale);
     status = DftiCommitDescriptor(desc_handle_dim1);
     status = DftiComputeBackward(desc_handle_dim1, I_t_I_w);
 

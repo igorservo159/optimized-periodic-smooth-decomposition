@@ -95,7 +95,7 @@ python3 plot_data.py example 1201 401 grey yes
 
 python3 plot_data_filtered.py example 1201 401 viridis no
 
-python3 plot_data_spectrum.py example spectrum_shifted 1201 401 viridis no
+python3 plot_spectrum.py example spectrum_shifted 1201 401 viridis no
 
 
 ```
