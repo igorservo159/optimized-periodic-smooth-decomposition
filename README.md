@@ -35,7 +35,7 @@ Os arquivos .bin e .png são sempre salvos com os mesmos nomes ("data", "data_fi
 Para executar o algoritmo OPSD em C, é recomendado que você utilize o comando make run em Routine_OPSD forneça os seguintes argumentos: 
 
 ```bash
-make run ARGS="<rows> <columns> <routine> <precision> <save_vector> <input> <dirname> <seed>"
+make run ARGS="<rows> <columns> <routine> <precision> <save_vector> <normalize> <input> <dirname> <seed>"
 ```
 
 Aqui estão as referências de strings para os argumentos:
@@ -60,6 +60,10 @@ Aqui estão as referências de strings para os argumentos:
 - `Dirname`:
   - `example`
   - `other dirname in bin`
+
+- `Normalize`:
+  - `yes`
+  - `no`
 
 
 ## Perfilar Código com VTune
