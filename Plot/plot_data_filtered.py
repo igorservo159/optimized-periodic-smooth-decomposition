@@ -3,22 +3,18 @@ import matplotlib.pyplot as plt
 import os
 import sys
 
-def read_cvector_bin(filename, rows, columns):
+def read_float32(filename, rows, columns):
     with open(filename, "rb") as file:
-        data = np.fromfile(file, dtype=np.complex64)
+        data = np.fromfile(file, dtype=np.float32)
         if data.size != rows * columns:
             raise ValueError("Tamanho do arquivo não corresponde às dimensões da matriz")
         matrix = data.reshape((rows, columns))
     return matrix
 
-def plot_spectrum(matrix, filename, save_path=None, cmap='viridis'):
-    magnitude = np.abs(matrix)
-        
-    magnitude_log = np.log(magnitude + 1)
-    
+def plot_image(matrix, filename, save_path=None, cmap='viridis'):
     plt.figure(figsize=(10, 6))
-    plt.imshow(magnitude, cmap=cmap, aspect='auto')
-    plt.colorbar(label='Magnitude (log scale)')
+    plt.imshow(matrix, cmap=cmap, aspect='auto')
+    plt.colorbar(label='Magnitude')
     plt.title(f'Imagem de {filename}')
     plt.xlabel('X')
     plt.ylabel('Y')
@@ -49,12 +45,12 @@ if __name__ == "__main__":
         output_dir = f"../img/{dirname}"
         os.makedirs(output_dir, exist_ok=True)
         
-        spectrum = read_cvector_bin(filepath, rows, columns)
+        spectrum = read_float32(filepath, rows, columns)
 
         if transpose == 'yes':
             spectrum = spectrum.T
             
         save_path = f"{output_dir}/{filename}.png"
-        plot_spectrum(spectrum, filename, save_path, cmap)
+        plot_image(spectrum, filename, save_path, cmap)
     except Exception as e:
         print(f"Erro: {e}")
