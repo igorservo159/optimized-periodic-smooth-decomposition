@@ -317,15 +317,20 @@ void compute_cfftshift(MKL_Complex8 *vector, size_t rows, size_t columns) {
     }
 }
 
-void normalize_cvector(MKL_Complex8 *cvector, size_t size){
-    float *magnitudes = NULL;
-    init_fvector(&magnitudes, size);
-    
-    vcAbs(size, cvector, magnitudes);
+void normalize_fvector(float *fvector, size_t size){
+    float min_val, max_val;
 
     for (int i = 0; i < size; i++) {
-        cvector[i].real = cvector[i].real / magnitudes[i];
-        cvector[i].imag = cvector[i].imag / magnitudes[i];
+        if (fvector[i] < min_val) {
+            min_val = fvector[i];
+        }
+        if (fvector[i] > max_val) {
+            max_val = fvector[i];
+        }
+    }
+
+    for (int i = 0; i < size; i++) {
+        fvector[i] = (fvector[i] - min_val) / (max_val - min_val);
     }
 }
 
@@ -645,14 +650,19 @@ void compute_zfftshift(MKL_Complex16 *vector, size_t rows, size_t columns) {
     }
 }
 
-void normalize_zvector(MKL_Complex16 *zvector, size_t size){
-    double *magnitudes = NULL;
-    init_dvector(&magnitudes, size);
-    
-    vzAbs(size, zvector, magnitudes);
+void normalize_dvector(double *dvector, size_t size){
+    double min_val, max_val;
 
     for (int i = 0; i < size; i++) {
-        zvector[i].real = zvector[i].real / magnitudes[i];
-        zvector[i].imag = zvector[i].imag / magnitudes[i];
+        if (dvector[i] < min_val) {
+            min_val = dvector[i];
+        }
+        if (dvector[i] > max_val) {
+            max_val = dvector[i];
+        }
+    }
+
+    for (int i = 0; i < size; i++) {
+        dvector[i] = (dvector[i] - min_val) / (max_val - min_val);
     }
 }

@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-int check_args(const char *BIN, const char *ROUTINE, const char *PRECISION, const char *SAVE_VECTORS, const char *INPUT);
+int check_args(const char *BIN, const char *ROUTINE, const char *PRECISION, const char *SAVE_VECTORS, const char *INPUT, const char *NORMALIZE);
 void ensure_directory_exists(const char *path);
 
 void init_cvector(MKL_Complex8 **vector, size_t size);
