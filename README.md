@@ -30,12 +30,12 @@ Recomendo utilizar o compilador icx, da própria intel, que pode ser adquirido i
 
 Quando for utilizar o algoritmo, obtenha o .bin da imagem que você quer filtrar, crie um diretório em Paper_OPSD/bin/ e coloque o binário dentro com o nome data.bin. Depois disso, é só executar o algoritmo.
 
-Os arquivos .bin e .png são sempre salvos com os mesmos nomes ("data", "data_filtered", "spectrum", "spectrum_shifted", "smooth", "smooth_shifted", "periodic", "periodic_shifted") nos diretórios Paper_OPSD/bin/{dirname}/ e Paper_OPSD/img/{dirname}/, respectivamente. 
+Os arquivos .bin e .png são sempre salvos com os mesmos nomes nos diretórios Paper_OPSD/bin/{dirname}/ e Paper_OPSD/img/{dirname}/, respectivamente. 
 
 Para executar o algoritmo OPSD em C, é recomendado que você utilize o comando make run em Routine_OPSD forneça os seguintes argumentos: 
 
 ```bash
-make run ARGS="<rows> <columns> <routine> <precision> <save_vector> <normalize> <input> <dirname> <seed>"
+make run ARGS="<rows> <columns> <routine> <precision> <save_vector> <input> <dirname> <seed>"
 ```
 
 Aqui estão as referências de strings para os argumentos:
@@ -60,10 +60,6 @@ Aqui estão as referências de strings para os argumentos:
 - `Dirname`:
   - `example`
   - `other dirname in bin`
-
-- `Normalize`:
-  - `yes`
-  - `no`
 
 
 ## Perfilar Código com VTune
@@ -92,16 +88,10 @@ Os binários das imagens e espectros de frequência podem sem encontrados no dir
 
 O código C contém, em utils, funções para ler e salvar binários.
 
-Há também, no diretório Paper_OPSD/Plot/, código para plotar as imagens e os espectros. Se for utilizá-los, passe como parâmetro o nome do diretório do e o nome do binário (apenas em spectrum), o número de rows, o número de columns, o color map e se deseja transpor a matriz como nos exemplos abaixo.
+Há também, no arquivo plot_data.py em Paper_OPSD/Plot/, um código para plotar as imagens e os espectros. Se for utilizá-los, passe como parâmetro o nome do diretório, o número de rows, o número de columns, o color map e se deseja transpor a matriz como nos exemplos abaixo.
 
 ```bash
-python3 plot_data.py example 1201 401 grey yes
-
-python3 plot_data_filtered.py example 1201 401 viridis no
-
-python3 plot_spectrum.py example spectrum_shifted 1201 401 viridis no
-
-
+python3 plot_data.py Lenna 312 312 grey no
 ```
 
 A imagem será salva em Paper_OPSD/img/{dirname}
