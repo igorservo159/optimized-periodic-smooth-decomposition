@@ -7,17 +7,40 @@ def read_float32(filename, rows, columns):
     with open(filename, "rb") as file:
         data = np.fromfile(file, dtype=np.float32)
         if data.size != rows * columns:
-            raise ValueError("Tamanho do arquivo não corresponde às dimensões da matriz")
+            raise ValueError("Tamanho da imagem não corresponde às dimensões da matriz")
         matrix = data.reshape((rows, columns))
     return matrix
 
-def plot_image(matrix, filename, save_path=None, cmap='viridis'):    
+def read_cvector_bin(filename, rows, columns):
+    with open(filename, "rb") as file:
+        data = np.fromfile(file, dtype=np.complex64)
+        if data.size != rows * columns:
+            raise ValueError("Tamanho do espectro não corresponde às dimensões da matriz")
+        matrix = data.reshape((rows, columns))
+    return matrix
+
+def plot_image(matrix, filename, save_path=None, cmap='viridis', vmin=None, vmax=None):
     plt.figure(figsize=(10, 6))
-    plt.imshow(matrix, cmap=cmap, aspect='auto')
+    plt.imshow(matrix, cmap=cmap, aspect='auto', vmin=vmin, vmax=vmax)
     plt.colorbar(label='Amplitude')
-    plt.title(f'Imagem de {filename}.bin')
+    plt.title(f'Imagem de {filename}')
     plt.xlabel('Distância X (m)')
     plt.ylabel('Profundidade Z (m)')
+    if save_path:
+        plt.savefig(save_path)
+    else:
+        plt.show()
+
+def plot_spectrum(matrix, filename, save_path=None):
+    magnitude = np.abs(matrix)
+    magnitude_log = np.log(magnitude + 1)
+    
+    plt.figure(figsize=(10, 6))
+    plt.imshow(magnitude_log, cmap='viridis', aspect='auto')
+    plt.colorbar(label='Magnitude (log scale)')
+    plt.title(f'Magnitude Spectrum\n{filename}')
+    plt.xlabel('X')
+    plt.ylabel('Y')
     if save_path:
         plt.savefig(save_path)
     else:
@@ -29,28 +52,46 @@ if __name__ == "__main__":
         sys.exit(1)
     
     dirname = sys.argv[1]
-    filename = "data"
     rows = int(sys.argv[2])
     columns = int(sys.argv[3])
     cmap = sys.argv[4]
     transpose = sys.argv[5].lower()
-    filepath = f"../bin/{dirname}/{filename}.bin"
+    dirpath = f"../bin/{dirname}"
     
     if cmap not in plt.colormaps():
         print(f"Erro: '{cmap}' não é um colormap válido. Use um dos seguintes: {plt.colormaps()}")
         sys.exit(1)
     
     try:
-        # Create the directory for the output image if it doesn't exist
+        # Create the directory for the output images if it doesn't exist
         output_dir = f"../img/{dirname}"
         os.makedirs(output_dir, exist_ok=True)
-
-        spectrum = read_float32(filepath, rows, columns)
         
-        if transpose == 'yes':
-            spectrum = spectrum.T
+        # Read the data.bin file to determine vmin and vmax
+        data_filepath = os.path.join(dirpath, "data.bin")
+        data_matrix = read_float32(data_filepath, rows, columns)
+        vmin, vmax = data_matrix.min(), data_matrix.max()
         
-        save_path = f"{output_dir}/{filename}.png"
-        plot_image(spectrum, filename, save_path, cmap)
+        # List all binary files in the directory
+        for filename in os.listdir(dirpath):
+            if filename.endswith(".bin"):
+                filepath = os.path.join(dirpath, filename)
+                
+                try:
+                    # Determine the type of data and read accordingly
+                    if any(x in filename for x in ["spectrum", "smooth", "periodic"]):
+                        spectrum = read_cvector_bin(filepath, rows, columns)
+                        save_path = os.path.join(output_dir, f"{os.path.splitext(filename)[0]}.png")
+                        plot_spectrum(spectrum, filename, save_path)
+                    else:
+                        image = read_float32(filepath, rows, columns)
+                        if transpose == 'yes':
+                            image = image.T
+                        save_path = os.path.join(output_dir, f"{os.path.splitext(filename)[0]}.png")
+                        plot_image(image, filename, save_path, cmap, vmin, vmax)
+                    
+                    print(f"Salvou imagem: {save_path}")
+                except Exception as e:
+                    print(f"Erro ao processar {filename}: {e}")
     except Exception as e:
         print(f"Erro: {e}")
