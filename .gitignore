@@ -4,9 +4,15 @@ Routine_OPSD/obj/fourier.o
 Routine_OPSD/obj/utils.o
 bin/*
 !bin/example/
+!bin/Lenna/
 bin/example/*
+bin/Lenna/*
 !bin/example/data.bin
+!bin/Lenna/data.bin
 img/*
 !img/example/
+!img/Lenna/
 img/example/*
+img/Lenna/*
 !img/example/data.png
+!img/Lenna/data.png
