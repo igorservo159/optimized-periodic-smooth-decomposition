@@ -1,9 +1,9 @@
 #include "../include/utils.h"
 
-int check_args(const char *BIN, const char *ROUTINE, const char *PRECISION, const char *SAVE_VECTORS, const char *INPUT, const char *NORMALIZE)
+int check_args(const char *BIN, const char *ROUTINE, const char *PRECISION, const char *SAVE_VECTORS, const char *INPUT)
 {
     if(!(strcmp(ROUTINE, "ccr") || strcmp(ROUTINE, "css") || strcmp(ROUTINE, "cts"))){
-        printf("Use: %s <rows> <columns> <routine> <precision> <save_vectors> <normalize> <input> <directory> <seed>\n", BIN);
+        printf("Use: %s <rows> <columns> <routine> <precision> <save_vectors> <input> <directory> <seed>\n", BIN);
         printf("Options to <routine>: 'ccr', 'cts', 'css'\n");
         return -2;
 
@@ -13,30 +13,24 @@ int check_args(const char *BIN, const char *ROUTINE, const char *PRECISION, cons
     }
 
     if(!(strcmp(PRECISION, "single") || strcmp(PRECISION, "double"))){
-        printf("Use: %s <rows> <columns> <routine> <precision> <save_vectors> <normalize> <input> <directory> <seed>\n", BIN);
+        printf("Use: %s <rows> <columns> <routine> <precision> <save_vectors> <input> <directory> <seed>\n", BIN);
         printf("Options to <precision>: 'single', 'double'\n");
         return -3;
     }
 
     if(!(strcmp(SAVE_VECTORS, "yes") || strcmp(SAVE_VECTORS, "no"))){
-        printf("Use: %s <rows> <columns> <routine> <precision> <save_vectors> <normalize> <input> <directory> <seed>\n", BIN);
+        printf("Use: %s <rows> <columns> <routine> <precision> <save_vectors> <input> <directory> <seed>\n", BIN);
         printf("Options to <save_vectors>: 'yes', 'no'\n");
         return -4;
     }
 
     if(!(strcmp(INPUT, "rb") || strcmp(INPUT, "fm"))){
-        printf("Use: %s <rows> <columns> <routine> <precision> <save_vectors> <normalize> <input> <directory> <seed>\n", BIN);
+        printf("Use: %s <rows> <columns> <routine> <precision> <save_vectors> <input> <directory> <seed>\n", BIN);
         printf("Options to <input>: 'rb', 'fm'\n");
         return -5;
 
         //read binary - rb
         //fill matrix - fm
-    }
-
-    if(!(strcmp(NORMALIZE, "yes") || strcmp(NORMALIZE, "no"))){
-        printf("Use: %s <rows> <columns> <routine> <precision> <save_vectors> <normalize> <input> <directory> <seed>\n", BIN);
-        printf("Options to <NORMALIZE>: 'yes', 'no'\n");
-        return -6;
     }
 
     return 0;
