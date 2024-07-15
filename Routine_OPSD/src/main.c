@@ -45,16 +45,10 @@ int main(int argc, char const *argv[])
             else if (!strcmp(INPUT, "fm"))
             {
                 fill_cmatrix(image, rows, columns, seed);
-            }
-
-            MKL_Complex8 *compare = NULL;
-            init_cvector(&compare, size);            
+            }           
 
             compute_cperiodic_border_B(image, B_t, rows, columns);
             compute_cfft2d(image, rows, columns);
-
-            cblas_ccopy(size, image, 1, compare, 1);
-            compute_cifft2d(compare, rows, columns);
 
             compute_cfft2d_of_border_B(B_t, rows, columns);
             compute_csmooth_component_S(B_t, rows, columns);
@@ -72,29 +66,8 @@ int main(int argc, char const *argv[])
                 save_fvector_on_bin(filepath, aux, size);
                 free_fvector(aux);
             }
-
-            if (!strcmp(SAVE_VECTORS, "yes"))
-            {
-                float *aux = NULL;
-                init_fvector(&aux, size);
-                copy_cvector_to_real_fvector(compare, aux, size);
-                snprintf(filepath, sizeof(filepath), "../bin/%s/data_.bin", DIR);
-                save_fvector_on_bin(filepath, aux, size);
-            }
-
-            vcSub(size, compare, image, compare);
-            
-            if (!strcmp(SAVE_VECTORS, "yes"))
-            {
-                float *aux = NULL;
-                init_fvector(&aux, size);
-                copy_cvector_to_real_fvector(compare, aux, size);
-                snprintf(filepath, sizeof(filepath), "../bin/%s/compare.bin", DIR);
-                save_fvector_on_bin(filepath, aux, size);
-            }
             
             free_cvector(B_t);
-            free_cvector(compare);
             free_cvector(image);
         }
         else if (!strcmp(PRECISION, "double"))
