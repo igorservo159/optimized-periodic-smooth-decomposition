@@ -21,8 +21,8 @@ def read_cvector_bin(filename, rows, columns):
 
 def plot_image(matrix, filename, save_path=None, cmap='viridis', vmin=None, vmax=None):
     plt.figure(figsize=(10, 6))
-    plt.imshow(matrix, cmap=cmap, aspect='auto', vmin=vmin, vmax=vmax)
-    plt.colorbar(label='Amplitude')
+    plt.imshow(matrix, cmap=cmap, aspect='auto', vmin=vmin, vmax=vmax, extent=[0, matrix.shape[1]*5, matrix.shape[0]*5, 0])
+    plt.colorbar(label='Magnitude')
     plt.title(f'Imagem de {filename}')
     plt.xlabel('Distância X (m)')
     plt.ylabel('Profundidade Z (m)')
@@ -81,6 +81,8 @@ if __name__ == "__main__":
                     # Determine the type of data and read accordingly
                     if any(x in filename for x in ["spectrum", "smooth", "periodic"]):
                         spectrum = read_cvector_bin(filepath, rows, columns)
+                        if transpose == 'yes':
+                            spectrum = spectrum.T
                         save_path = os.path.join(output_dir, f"{os.path.splitext(filename)[0]}.png")
                         plot_spectrum(spectrum, filename, save_path)
                     else:
