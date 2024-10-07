@@ -88,10 +88,10 @@ Os binários das imagens e espectros de frequência podem sem encontrados no dir
 
 O código C contém, em utils, funções para ler e salvar binários.
 
-Há também, no arquivo plot_data.py em Paper_OPSD/Plot/, um código para plotar as imagens e os espectros. Se for utilizá-los, passe como parâmetro o nome do diretório, o número de rows, o número de columns, o color map e se deseja transpor a matriz como nos exemplos abaixo.
+Há também, no arquivo plot_all.py em Paper_OPSD/Plot/, um código para plotar as imagens e os espectros. Se for utilizá-lo, passe como parâmetro o nome do diretório, o número de rows, o número de columns, o color map e se deseja transpor a matriz como nos exemplos abaixo.
 
 ```bash
-python3 plot_data.py Lenna 312 312 grey no
+python3 plot_all.py Lenna 312 312 grey no
 ```
 
 A imagem será salva em Paper_OPSD/img/{dirname}

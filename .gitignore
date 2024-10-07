@@ -9,9 +9,9 @@ bin/*
 bin/modvel0/*
 bin/modvel1/*
 bin/Lenna/*
-!bin/modvel0/data.bin
-!bin/modvel1/data.bin
-!bin/Lenna/data.bin
+!bin/modvel0/image.bin
+!bin/modvel1/image.bin
+!bin/Lenna/image.bin
 img/*
 !img/modvel0/
 !img/modvel1/
@@ -19,6 +19,6 @@ img/*
 img/modvel0/*
 img/modvel1/*
 img/Lenna/*
-!img/modvel0/data.png
-!img/modvel1/data.png
-!img/Lenna/data.png
+!img/modvel0/image.png
+!img/modvel1/image.png
+!img/Lenna/image.png
