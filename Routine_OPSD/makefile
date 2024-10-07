@@ -31,6 +31,7 @@ clean:
 	@rm -rf $(OBJDIR)/*.o $(EXEC)
 
 run: $(EXEC)
+	@echo "Running with arguments: $(ARGS)"
 	@$(EXEC) $(ARGS)
 
 .PHONY: all clean

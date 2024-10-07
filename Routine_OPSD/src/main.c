@@ -23,6 +23,16 @@ int main(int argc, char const *argv[])
 
     ensure_directory_exists(filepath);
 
+    //CONST PATHS
+    const char *IMAGE = "image.bin";
+    const char *SHIFTED_SPECTRUM = "shifted_spectrum.bin";
+    const char *SHIFTED_SMOOTH_SPECTRUM = "shifted_smooth_spectrum.bin";
+    const char *SHIFTED_PERIODIC_SPECTRUM = "shifted_periodic_spectrum.bin";
+    const char *SPECTRUM = "spectrum.bin";
+    const char *SMOOTH_SPECTRUM = "smooth_spectrum.bin";
+    const char *PERIODIC_SPECTRUM = "periodic_spectrum.bin";
+    const char *FILTERED_IMAGE = "filtered_image.bin";
+
     if (!strcmp(ROUTINE, "ccr"))
     {
         if (!strcmp(PRECISION, "single"))
@@ -37,7 +47,7 @@ int main(int argc, char const *argv[])
             {
                 float *aux = NULL;
                 init_fvector(&aux, size);
-                snprintf(filepath, sizeof(filepath), "../bin/%s/data.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, IMAGE);
                 read_fvector_bin(filepath, aux, size);
                 copy_fvector_to_cvector(image, aux, size);
                 free_fvector(aux);
@@ -62,7 +72,7 @@ int main(int argc, char const *argv[])
                 float *aux = NULL;
                 init_fvector(&aux, size);
                 copy_cvector_to_real_fvector(image, aux, size);
-                snprintf(filepath, sizeof(filepath), "../bin/%s/data_filtered.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, FILTERED_IMAGE);
                 save_fvector_on_bin(filepath, aux, size);
                 free_fvector(aux);
             }
@@ -82,7 +92,7 @@ int main(int argc, char const *argv[])
             {
                 double *aux = NULL;
                 init_dvector(&aux, size);
-                snprintf(filepath, sizeof(filepath), "../bin/%s/data.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, IMAGE);
                 read_dvector_bin(filepath, aux, size);
                 copy_dvector_to_zvector(image, aux, size);
                 free_dvector(aux);
@@ -92,14 +102,8 @@ int main(int argc, char const *argv[])
                 fill_zmatrix(image, rows, columns, seed);
             }
 
-            MKL_Complex16 *compare = NULL;
-            init_zvector(&compare, size);  
-
             compute_zperiodic_border_B(image, B_t, rows, columns);
             compute_zfft2d(image, rows, columns);
-
-            cblas_zcopy(size, image, 1, compare, 1);
-            compute_zifft2d(compare, rows, columns);
 
             compute_zfft2d_of_border_B(B_t, rows, columns);
             compute_zsmooth_component_S(B_t, rows, columns);
@@ -113,29 +117,9 @@ int main(int argc, char const *argv[])
                 double *aux = NULL;
                 init_dvector(&aux, size);
                 copy_zvector_to_real_dvector(image, aux, size);
-                snprintf(filepath, sizeof(filepath), "../bin/%s/data_filtered.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, FILTERED_IMAGE);
                 save_dvector_on_bin(filepath, aux, size);
                 free_dvector(aux);
-            }
-
-            if (!strcmp(SAVE_VECTORS, "yes"))
-            {
-                double *aux = NULL;
-                init_dvector(&aux, size);
-                copy_zvector_to_real_dvector(compare, aux, size);
-                snprintf(filepath, sizeof(filepath), "../bin/%s/data_.bin", DIR);
-                save_dvector_on_bin(filepath, aux, size);
-            }
-
-            vzSub(size, compare, image, compare);
-            
-            if (!strcmp(SAVE_VECTORS, "yes"))
-            {
-                double *aux = NULL;
-                init_dvector(&aux, size);
-                copy_zvector_to_real_dvector(compare, aux, size);
-                snprintf(filepath, sizeof(filepath), "../bin/%s/compare.bin", DIR);
-                save_dvector_on_bin(filepath, aux, size);
             }
 
             free_zvector(B_t);
@@ -156,7 +140,7 @@ int main(int argc, char const *argv[])
             {
                 float *aux = NULL;
                 init_fvector(&aux, size);
-                snprintf(filepath, sizeof(filepath), "../bin/%s/data.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, IMAGE);
                 read_fvector_bin(filepath, aux, size);
                 copy_fvector_to_cvector(image, aux, size);
                 free_fvector(aux);
@@ -171,7 +155,7 @@ int main(int argc, char const *argv[])
 
             if (!strcmp(SAVE_VECTORS, "yes"))
             {
-                snprintf(filepath, sizeof(filepath), "../bin/%s/spectrum.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, SPECTRUM);
                 save_cvector_on_bin(filepath, image, size);
             }
 
@@ -180,7 +164,7 @@ int main(int argc, char const *argv[])
 
             if (!strcmp(SAVE_VECTORS, "yes"))
             {
-                snprintf(filepath, sizeof(filepath), "../bin/%s/smooth.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, SMOOTH_SPECTRUM);
                 save_cvector_on_bin(filepath, B_t, size);
             }
 
@@ -188,7 +172,7 @@ int main(int argc, char const *argv[])
 
             if (!strcmp(SAVE_VECTORS, "yes"))
             {
-                snprintf(filepath, sizeof(filepath), "../bin/%s/periodic.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, PERIODIC_SPECTRUM);
                 save_cvector_on_bin(filepath, image, size);
             }
 
@@ -207,7 +191,7 @@ int main(int argc, char const *argv[])
             {
                 double *aux = NULL;
                 init_dvector(&aux, size);
-                snprintf(filepath, sizeof(filepath), "../bin/%s/data.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, IMAGE);
                 read_dvector_bin(filepath, aux, size);
                 copy_dvector_to_zvector(image, aux, size);
                 free_dvector(aux);
@@ -222,7 +206,7 @@ int main(int argc, char const *argv[])
 
             if (!strcmp(SAVE_VECTORS, "yes"))
             {
-                snprintf(filepath, sizeof(filepath), "../bin/%s/spectrum.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, SPECTRUM);
                 save_zvector_on_bin(filepath, image, size);
             }
 
@@ -231,7 +215,7 @@ int main(int argc, char const *argv[])
 
             if (!strcmp(SAVE_VECTORS, "yes"))
             {
-                snprintf(filepath, sizeof(filepath), "../bin/%s/smooth.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, SMOOTH_SPECTRUM);
                 save_zvector_on_bin(filepath, B_t, size);
             }
 
@@ -239,7 +223,7 @@ int main(int argc, char const *argv[])
 
             if (!strcmp(SAVE_VECTORS, "yes"))
             {
-                snprintf(filepath, sizeof(filepath), "../bin/%s/periodic.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, PERIODIC_SPECTRUM);
                 save_zvector_on_bin(filepath, image, size);
             }
 
@@ -261,7 +245,7 @@ int main(int argc, char const *argv[])
             {
                 float *aux = NULL;
                 init_fvector(&aux, size);
-                snprintf(filepath, sizeof(filepath), "../bin/%s/data.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, IMAGE);
                 read_fvector_bin(filepath, aux, size);
                 copy_fvector_to_cvector(image, aux, size);
                 free_fvector(aux);
@@ -277,7 +261,7 @@ int main(int argc, char const *argv[])
 
             if (!strcmp(SAVE_VECTORS, "yes"))
             {
-                snprintf(filepath, sizeof(filepath), "../bin/%s/spectrum_shifted.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, SHIFTED_SPECTRUM);
                 save_cvector_on_bin(filepath, image, size);
             }
 
@@ -287,7 +271,7 @@ int main(int argc, char const *argv[])
 
             if (!strcmp(SAVE_VECTORS, "yes"))
             {
-                snprintf(filepath, sizeof(filepath), "../bin/%s/smooth_shifted.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, SHIFTED_SMOOTH_SPECTRUM);
                 save_cvector_on_bin(filepath, B_t, size);
             }
 
@@ -295,7 +279,7 @@ int main(int argc, char const *argv[])
 
             if (!strcmp(SAVE_VECTORS, "yes"))
             {
-                snprintf(filepath, sizeof(filepath), "../bin/%s/periodic_shifted.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, SHIFTED_PERIODIC_SPECTRUM);
                 save_cvector_on_bin(filepath, image, size);
             }
 
@@ -314,7 +298,7 @@ int main(int argc, char const *argv[])
             {
                 double *aux = NULL;
                 init_dvector(&aux, size);
-                snprintf(filepath, sizeof(filepath), "../bin/%s/data.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, IMAGE);
                 read_dvector_bin(filepath, aux, size);
                 copy_dvector_to_zvector(image, aux, size);
                 free_dvector(aux);
@@ -330,7 +314,7 @@ int main(int argc, char const *argv[])
 
             if (!strcmp(SAVE_VECTORS, "yes"))
             {
-                snprintf(filepath, sizeof(filepath), "../bin/%s/spectrum_shifted.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, SHIFTED_SPECTRUM);
                 save_zvector_on_bin(filepath, image, size);
             }
 
@@ -340,7 +324,7 @@ int main(int argc, char const *argv[])
 
             if (!strcmp(SAVE_VECTORS, "yes"))
             {
-                snprintf(filepath, sizeof(filepath), "../bin/%s/smooth_shifted.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, SHIFTED_SMOOTH_SPECTRUM);
                 save_zvector_on_bin(filepath, B_t, size);
             }
 
@@ -348,7 +332,7 @@ int main(int argc, char const *argv[])
 
             if (!strcmp(SAVE_VECTORS, "yes"))
             {
-                snprintf(filepath, sizeof(filepath), "../bin/%s/periodic_shifted.bin", DIR);
+                snprintf(filepath, sizeof(filepath), "../bin/%s/%s", DIR, SHIFTED_PERIODIC_SPECTRUM);
                 save_zvector_on_bin(filepath, image, size);
             }
 
