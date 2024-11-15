@@ -1,21 +1,21 @@
-# Definições
+# Definition
 CC = gcc
 CFLAGS = -fopenmp -I./include
-LDFLAGS = -lmkl_rt -lm -ldl
+LDFLAGS = -lmkl_rt -lm -ldl -liomp5 -lpthread
 
-# Diretórios
+# Directories
 BINDIR = bin
 OBJDIR = obj
 SRCDIR = src
 INCDIR = include
 
-# Arquivos
+# Files
 EXEC = $(BINDIR)/out
 SRCS = $(filter-out $(SRCDIR)/main.c, $(wildcard $(SRCDIR)/*.c))
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 MAIN = $(SRCDIR)/main.c
 
-# Regras
+# Rules
 all: $(EXEC)
 
 $(EXEC): $(OBJS) $(MAIN) | $(BINDIR)

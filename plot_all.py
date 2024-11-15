@@ -59,7 +59,7 @@ if __name__ == "__main__":
     columns = int(sys.argv[3])
     cmap = sys.argv[4]
     transpose = sys.argv[5].lower()
-    dirpath = f"../bin/{dirname}"
+    dirpath = f"bin/{dirname}"
     
     if cmap not in plt.colormaps():
         print(f"Erro: '{cmap}' não é um colormap válido. Use um dos seguintes: {plt.colormaps()}")
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     
     try:
         # Create the directory for the output images if it doesn't exist
-        output_dir = f"../img/{dirname}"
+        output_dir = f"img/{dirname}"
         os.makedirs(output_dir, exist_ok=True)
         
         # Read the image.bin file to determine vmin and vmax

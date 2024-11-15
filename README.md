@@ -33,7 +33,7 @@ The `.bin` and `.png` files will be saved with the same names in the following d
 - Binary files: `bin/{dirname}/`
 - Image files: `img/{dirname}/`
 
-To execute the OPSD algorithm in C, navigate to `Routine_OPSD` and run the following command:
+To execute the OPSD algorithm in C, navigate to `routine` and run the following command:
 
 ```bash
 make run ARGS="<rows> <columns> <routine> <precision> <save_vector> <input> <dirname> <seed>"
@@ -65,7 +65,7 @@ make run ARGS="<rows> <columns> <routine> <precision> <save_vector> <input> <dir
 
 The binary files for the images and frequency spectrums can be found in `bin/{dirname}/`, and their corresponding image files in `img/{dirname}/`.
 
-C utility functions in the `utils` folder allow reading and saving of binary files. Additionally, the `plot_all.py` script in `plot/` can be used to plot images and spectrums. To use this script, provide the directory name, the number of rows, the number of columns, the color map, and whether to transpose the matrix, as shown below:
+C utility functions in the `utils` folder allow reading and saving of binary files. Additionally, the `plot_all.py` script can be used to plot images and spectrums. To use this script, provide the directory name, the number of rows, the number of columns, the color map, and whether to transpose the matrix, as shown below:
 ```bash
 python3 plot_all.py Lenna 312 312 grey no
 

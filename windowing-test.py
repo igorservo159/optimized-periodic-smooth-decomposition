@@ -59,10 +59,10 @@ if __name__ == "__main__":
     window_size = int(sys.argv[4])
     transpose = sys.argv[5].lower()
     
-    dirpath = f"../bin/{dirname}"
+    dirpath = f"bin/{dirname}"
     filepath = os.path.join(dirpath, "image.bin")
 
-    savename = f"../bin/{dirname}/windowing"
+    savename = f"bin/{dirname}/windowing"
     os.makedirs(savename, exist_ok=True)
     window_savepath = os.path.join(savename, "image.bin")
     fft_window_savepath = os.path.join(savename, "fft_window_image.bin")
@@ -89,7 +89,7 @@ if __name__ == "__main__":
 
     args = f"{window_size} {window_size} {routine} {precision} {save_vector} {input_file} {savename_} {seed}"
 
-    make_directory = "../Routine_OPSD"
+    make_directory = "routine"
 
     # Execute o comando make com os argumentos no diretório especificado
     subprocess.run(f"make run ARGS=\"{args}\"", shell=True, cwd=make_directory)
