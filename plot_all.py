@@ -20,17 +20,11 @@ def read_cvector_bin(filename, rows, columns):
     return matrix
 
 def plot_image(matrix, filename, save_path=None, cmap='viridis', vmin=None, vmax=None):
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(10, 10))
     plt.imshow(matrix, cmap=cmap, aspect='auto', vmin=vmin, vmax=vmax,)
-    #plt.imshow(matrix, cmap=cmap, aspect='auto', vmin=vmin, vmax=vmax, extent=[0, matrix.shape[1]*5, matrix.shape[0]*5, 0])
-    plt.colorbar(label='Magnitude')
-    plt.title(f'{filename}')
-    plt.xlabel('X')
-    plt.ylabel('Y')
-    #plt.xlabel('Distância X (m)')
-    #plt.ylabel('Profundidade Z (m)')
+    plt.axis('off')  # Desativa os eixos
     if save_path:
-        plt.savefig(save_path)
+        plt.savefig(save_path, bbox_inches='tight', pad_inches=0)  # Salva sem margem
     else:
         plt.show()
 
@@ -38,14 +32,11 @@ def plot_spectrum(matrix, filename, save_path=None):
     magnitude = np.abs(matrix)
     magnitude_log = np.log(magnitude + 1)
     
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(10, 10))
     plt.imshow(magnitude_log, cmap='viridis', aspect='auto')
-    plt.colorbar(label='Magnitude (log scale)')
-    plt.title(f'{filename}')
-    plt.xlabel('X')
-    plt.ylabel('Y')
+    plt.axis('off')  # Desativa os eixos
     if save_path:
-        plt.savefig(save_path)
+        plt.savefig(save_path, bbox_inches='tight', pad_inches=0)  # Salva sem margem
     else:
         plt.show()
 
@@ -88,14 +79,14 @@ if __name__ == "__main__":
                             spectrum = spectrum.T
                         save_path = os.path.join(output_dir, f"{os.path.splitext(filename)[0]}.png")
                         plot_spectrum(spectrum, filename, save_path)
+                        print(f"Salvou espectro: {save_path}")
                     elif any (x in filename for x in ["image"]):
                         image = read_float32(filepath, rows, columns)
                         if transpose == 'yes':
                             image = image.T
                         save_path = os.path.join(output_dir, f"{os.path.splitext(filename)[0]}.png")
                         plot_image(image, filename, save_path, cmap, vmin, vmax)
-                    
-                    print(f"Salvou imagem: {save_path}")
+                        print(f"Salvou imagem: {save_path}")
                 except Exception as e:
                     print(f"Erro ao processar {filename}: {e}")
     except Exception as e:
