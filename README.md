@@ -8,6 +8,12 @@ The **Optimized Periodic Plus Smooth Decomposition (OPSD)** algorithm is designe
 
 This implementation is optimized for large images using Intel's MKL (Math Kernel Library) for high efficiency.
 
+### Results
+
+![Lenna PSD Decomposition](./PSD_Lenna.png)
+
+![Lenna PSD Comparation](./PSD_Lenna_Comparation.png)
+
 ## Citations
 
 - Original algorithm by Lionel Moisan: [Periodic Plus Smooth Image Decomposition (2009)](https://helios2.mi.parisdescartes.fr/~moisan/papers/2009-11r.pdf)
