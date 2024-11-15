@@ -1,97 +1,71 @@
-# Algorithm and Architecture Optimization for 2D Discrete Fourier Transforms with Simultaneous Edge Artifact Removal
+# Optimized Periodic Plus Smooth Decomposition (OPSD)
 
-Este repositório, que possui fins exclusivamente educacionais, contém a implementação de um algoritmo bastante útil no processamento digital de imagens, conhecido como Periodic Plus Smooth Decomposition (PSD). Inspirado por um artigo do International Journal of Reconfigurable Computing, esta implementação aborda a remoção de artefatos de borda em transformadas de Fourier discretas 2D, comuns em imagens não periódicas tratadas como periódicas.
+**Periodic-Smooth Decomposition (PSD) routine for General 2D Images**, optimized in C with Intel MKL for efficient handling of large datasets. This repository provides Python scripts for visualizing the results and utilities for manipulating binary data.
 
-É importante salientar que este foi inspirado por um artigo do International Journal of Reconﬁgurable Computing, da editora Hindawi, o qual está disponível no link abaixo.
+## Overview
 
-[Clique aqui para acessar o artigo!](https://onlinelibrary.wiley.com/doi/10.1155/2018/1403181)
+The **Optimized Periodic Plus Smooth Decomposition (OPSD)** algorithm is designed to separate a 2D image into a periodic and smooth component. This method is particularly effective in removing boundary artifacts that occur when applying the 2D Discrete Fourier Transform (DFT) on non-periodic images treated as periodic. By decomposing the image, OPSD mitigates these edge artifacts, resulting in a cleaner frequency domain representation.
 
-## Compilação do Algoritmo OPSD em C
+This implementation is optimized for large images using Intel's MKL (Math Kernel Library) for high efficiency.
 
-Certifique-se de ter a biblioteca Intel MKL instalada!
-[Clique aqui para acessar a página de download da biblioteca](https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl-download.html).
+## Citations
 
-Após a instalação, lembre de utilizar as variáveis de ambiente da MKL que possuem caminho default /opt/intel/oneapi/setvars.sh.
+- Original algorithm by Lionel Moisan: [Periodic Plus Smooth Image Decomposition (2009)](https://helios2.mi.parisdescartes.fr/~moisan/papers/2009-11r.pdf)
+- Optimization explanation by Faisal Mahmood, Märt Toots, Lars-Göran Öfverstedt and Ulf Skoglund: [Algorithm and Architecture Optimization for 2D Discrete
+Fourier Transforms with Simultaneous Edge Artifact Removal](https://onlinelibrary.wiley.com/doi/10.1155/2018/1403181)
 
-Para compilar o código, recomendo que você utilize o arquivo makefile em Routine_OPSD, que já está bem configurado para compilar o código.
+## Requirements
+
+Ensure that Intel MKL is installed on your system before running the routine. You can download the MKL library from the Intel website:  
+[Click here to access the Intel MKL download page](https://www.intel.com/content/www/us/en/developer/tools/oneapi/onemkl-download.html).
+
+Before running, source the MKL environment variables using:
 ```bash
-make
+source /opt/intel/oneapi/setvars.sh
 ```
 
-Mas caso necessite, as diretivas de compilação são as seguintes:
+## Running the OPSD Algorithm in C
 
-```bash
-gcc -o example example.c -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm -ldl -qopenmp
-```
+To use the OPSD algorithm, first obtain a `.bin` file of the image you wish to filter. Place this binary file in `bin/` and rename it to `data.bin`. Once the file is in place, you can run the algorithm.
 
-Recomendo utilizar o compilador icx, da própria intel, que pode ser adquirido instalando o oneapi base toolkit, o qual já vem com várias ferramentas usadas nesse projeto, incluindo o perfilador e a MKL Intel. Caso queira utilizá-lo lembre de trocar o compilador de gcc para icx no makefile.
+The `.bin` and `.png` files will be saved with the same names in the following directories:
 
-## Execução do Algoritmo OPSD em C
+- Binary files: `bin/{dirname}/`
+- Image files: `img/{dirname}/`
 
-Quando for utilizar o algoritmo, obtenha o .bin da imagem que você quer filtrar, crie um diretório em Paper_OPSD/bin/ e coloque o binário dentro com o nome data.bin. Depois disso, é só executar o algoritmo.
-
-Os arquivos .bin e .png são sempre salvos com os mesmos nomes nos diretórios Paper_OPSD/bin/{dirname}/ e Paper_OPSD/img/{dirname}/, respectivamente. 
-
-Para executar o algoritmo OPSD em C, é recomendado que você utilize o comando make run em Routine_OPSD forneça os seguintes argumentos: 
+To execute the OPSD algorithm in C, navigate to `Routine_OPSD` and run the following command:
 
 ```bash
 make run ARGS="<rows> <columns> <routine> <precision> <save_vector> <input> <dirname> <seed>"
 ```
+### Argument Reference
 
-Aqui estão as referências de strings para os argumentos:
-
-- `Routine`:
+- **Routine**:
   - `ccr`: compute complete routine.
   - `css`: compute shifted spectrums.
-  - `cts`: compute tradicional spectrums.
+  - `cts`: compute traditional spectrums.
 
-- `Input`:
+- **Input**:
   - `rb`: read binary.
   - `fm`: fill matrix.
-  
-- `Precision`:
+
+- **Precision**:
   - `single`
   - `double`
 
-- `Save_vector`:
+- **Save_vector**:
   - `yes`
   - `no`
 
-- `Dirname`:
+- **Dirname**:
   - `example`
   - `other dirname in bin`
 
+## Plotting Spectrums and Images
 
-## Perfilar Código com VTune
+The binary files for the images and frequency spectrums can be found in `bin/{dirname}/`, and their corresponding image files in `img/{dirname}/`.
 
-Para perfilar o código, certifique-se de ter o software instalado e use o seguinte comando:
-
-```bash
-vtune -collect hotspots -result-dir=results ./example
-```
-
-Você pode checar os resultados com:
-
-```bash
-vtune-gui results
-```
-
-Se necessário, utilize o seguinte comando para habilitar o VTune:
-
-```bash
-source /opt/intel/oneapi/vtune/latest/env/vars.sh
-```
-
-## Plotando os espectros e as imagens
-
-Os binários das imagens e espectros de frequência podem sem encontrados no diretório Paper_OPSD/bin/{dirname}/, e suas respectivas imagens no diretório Paper_OPSD/img/{dirname}/.
-
-O código C contém, em utils, funções para ler e salvar binários.
-
-Há também, no arquivo plot_all.py em Paper_OPSD/Plot/, um código para plotar as imagens e os espectros. Se for utilizá-lo, passe como parâmetro o nome do diretório, o número de rows, o número de columns, o color map e se deseja transpor a matriz como nos exemplos abaixo.
-
+C utility functions in the `utils` folder allow reading and saving of binary files. Additionally, the `plot_all.py` script in `plot/` can be used to plot images and spectrums. To use this script, provide the directory name, the number of rows, the number of columns, the color map, and whether to transpose the matrix, as shown below:
 ```bash
 python3 plot_all.py Lenna 312 312 grey no
-```
 
-A imagem será salva em Paper_OPSD/img/{dirname}
