@@ -14,7 +14,7 @@ This implementation is optimized for large images using Intel's MKL (Math Kernel
 
 ![Lenna PSD Comparation](./Lenna_Comparation.png)
 
-## Citations
+## References
 
 - Original algorithm by Lionel Moisan: [Periodic Plus Smooth Image Decomposition (2009)](https://helios2.mi.parisdescartes.fr/~moisan/papers/2009-11r.pdf)
 - Optimization explanation by Faisal Mahmood, Märt Toots, Lars-Göran Öfverstedt and Ulf Skoglund: [Algorithm and Architecture Optimization for 2D Discrete
