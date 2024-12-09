@@ -10,9 +10,9 @@ This implementation is optimized for large images using Intel's MKL (Math Kernel
 
 ### Results
 
-![Lenna PSD Decomposition](./Lenna_Decomposition.png)
+![Lenna PSD Decomposition](./img/README/Lenna_Decomposition.png)
 
-![Lenna PSD Comparation](./Lenna_Comparation.png)
+![Lenna PSD Comparation](./img/README/Lenna_Comparation.png)
 
 ## References
 
