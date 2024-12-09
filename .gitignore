@@ -10,3 +10,5 @@ img/*
 !img/Lenna/
 img/Lenna/*
 !img/Lenna/image.png
+!img/README/
+!img/README/*
